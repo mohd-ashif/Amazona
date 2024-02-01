@@ -50,7 +50,7 @@ const data = {
       },
       {
         name: 'Nike Running Shoes',
-        slug: 'nike-running-shoes',
+        slug: 'nike-nike-t shirt',
         category: 'Shoes',
         image: '/images/p5.jpg',
         price: 150,
