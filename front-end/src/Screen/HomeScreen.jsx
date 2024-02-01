@@ -1,11 +1,11 @@
-import { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import logger from "use-reducer-logger"
 import Row from "react-bootstrap/Row"
 import Col from 'react-bootstrap/Col'
 import Product from '../component/Product';
-
+import { Helmet } from 'react-helmet-async';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -43,6 +43,10 @@ function HomeScreen() {
 
   return (
     <div>
+      <Helmet>
+        <Title>Amazona</Title>
+        {/* Add other meta tags, scripts, or styles here */}
+      </Helmet>
       <h1>Featured Products</h1>
       
       <div className="products">
@@ -52,12 +56,11 @@ function HomeScreen() {
           <div>{error}</div>
         ) : (
           <Row>
-        { products.map((product) => (
-          <Col  key={product.slug} sm={6} md={4} lg={3} className="mb-3" >
-            <Product product={product} />
-            </Col>
-          ))}
-          
+            {products.map((product) => (
+              <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3" >
+                <Product product={product} />
+              </Col>
+            ))}
           </Row>
         )}
       </div>

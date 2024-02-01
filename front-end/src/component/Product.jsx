@@ -17,7 +17,8 @@ const Product = (props) => {
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>${product.price}</Card.Text>
-        <Button>Add to cart</Button>
+        <Button className="btn btn-warning">Add to cart</Button>
+
       </Card.Body>
     </Card>
   );

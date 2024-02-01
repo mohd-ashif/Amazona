@@ -15,10 +15,7 @@ body {
     
     flex: 1;
   }
-  .btn-primary {
-    background-color: #ffc400;
-    color: #000000;
-  }
+ 
 
   .rating span {
     color: #ffc000;
@@ -40,6 +37,12 @@ body {
   }
   .product-info {
     padding: 1rem;
+  }
+  .product-info {
+    padding: 1rem;
+  }
+  .img-large {
+    max-width: 100%;
   }
   footer {
     background-color: #17131d;
