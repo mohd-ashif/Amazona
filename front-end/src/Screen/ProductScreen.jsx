@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Col from 'react-bootstrap/Col';
@@ -9,6 +9,10 @@ import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Rating from '../component/Rating';
 import { Helmet } from 'react-helmet-async';
+import LoadingBox from '../component/LoadingBox';
+import MessageBox from '../component/MeassageBox';
+import { getError } from '../utils';
+import { Store } from '../Store';
 
 
 const reducer = (state, action) => {
@@ -41,19 +45,27 @@ const ProductScreen = () => {
         const result = await axios.get(`http://localhost:5000/products/slug/${slug}`);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (error) {
-        dispatch({ type: 'FETCH_FAIL', payload: error.message });
+        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
 
     fetchData();
   }, [slug]);
+  
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const addToCartHandler = () => {
+    ctxDispatch({
+      type: "CART_ADD_ITEM",  // Corrected action type
+      payload: { ...product, quantity: 1 },
+    });
+  };
 
   return (
     <div>
       {loading ? (
-        <div>Loading...</div>
+        <div><LoadingBox /></div>
       ) : error ? (
-        <div>{error}</div>
+        <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <div>
           <h1>{slug}</h1>
@@ -107,7 +119,7 @@ const ProductScreen = () => {
                     {product.countInStock > 0 && (
                       <ListGroup.Item>
                         <div className="d-grid">
-                          <Button variant="warning">Add to Cart</Button>
+                          <Button onClick={addToCartHandler} variant="warning">Add to Cart</Button>
                         </div>
                       </ListGroup.Item>
                     )}
