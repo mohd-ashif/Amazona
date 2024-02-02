@@ -31,7 +31,7 @@ function App() {
                   <img src={cart_icon} alt="Cart" style={{ width: '35px', height: '35px' }} />
                     {cart.cartItems.length > 0 && (
                       <Badge pill bg="danger">
-                        {cart.cartItems.length}
+                         {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
                       </Badge>
                     )}
                   </Link>

@@ -14,7 +14,6 @@ import MessageBox from '../component/MeassageBox';
 import { getError } from '../utils';
 import { Store } from '../Store';
 
-
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -45,19 +44,34 @@ const ProductScreen = () => {
         const result = await axios.get(`http://localhost:5000/products/slug/${slug}`);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (error) {
-        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+        dispatch({ type: 'FETCH_FAIL', payload: getError(error) });
       }
     };
 
     fetchData();
   }, [slug]);
-  
+
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const addToCartHandler = () => {
-    ctxDispatch({
-      type: "CART_ADD_ITEM",  // Corrected action type
-      payload: { ...product, quantity: 1 },
-    });
+  const { cart } = state;
+
+  const addToCartHandler = async () => {
+    const existItem = cart.cartItems.find((x) => x.id === product.id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+
+    try {
+      const { data } = await axios.get(`http://localhost:5000/products/${product._id}`);
+      if (data.countInStock < quantity) {
+        window.alert("Sorry. Product is out of stock.");
+        return;
+      }
+
+      ctxDispatch({
+        type: "CART_ADD_ITEM",
+        payload: { ...product, quantity },
+      });
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    }
   };
 
   return (
@@ -76,11 +90,9 @@ const ProductScreen = () => {
             <Col md={5}>
               <ListGroup variant="flush">
                 <ListGroup.Item>
-               <Helmet>
-               <title>{product.name}</title>
-               </Helmet>
-                    
-               
+                  <Helmet>
+                    <title>{product.name}</title>
+                  </Helmet>
                   <h1>{product.name}</h1>
                 </ListGroup.Item>
                 <ListGroup.Item>

@@ -1,6 +1,7 @@
 const data = {
   products: [
     {
+      _id: '1',
       name: 'Nike Slim Shirt',
       slug: 'nike-slim-shirt',
       category: 'Shirts',
@@ -13,6 +14,7 @@ const data = {
       description: 'High-quality shirt from Nike. This slim-fit shirt is designed for both style and comfort, making it a perfect addition to your wardrobe.',
     },
     {
+      _id: '2',
       name: 'Adidas Fit Shirt',
       slug: 'adidas-fit-shirt',
       category: 'Shirts',
@@ -25,6 +27,7 @@ const data = {
       description: 'Discover comfort and style with the Adidas Fit Shirt. Made with premium materials, this shirt offers a perfect fit for your active lifestyle.',
     },
     {
+      _id: '3',
       name: 'Nike Slim Pant',
       slug: 'nike-slim-pant',
       category: 'Pants',
@@ -37,6 +40,7 @@ const data = {
       description: 'Upgrade your wardrobe with the Nike Slim Pant. These comfortable and stylish pants are perfect for both casual and active wear.',
     },
     {
+      _id: '4',
       name: 'Adidas Fit Pant',
       slug: 'adidas-fit-pant',
       category: 'Pants',
@@ -49,6 +53,7 @@ const data = {
       description: 'Experience ultimate comfort with the Adidas Fit Pant. Ideal for various activities, these pants provide flexibility and style in one package.',
     },
     {
+      _id: '5',
       name: 'Nike Running Shoes',
       slug: 'nike-nike-t-shirt',
       category: 'Shoes',
@@ -61,6 +66,7 @@ const data = {
       description: 'Enhance your running experience with Nike Running Shoes. Designed for comfort and performance, these shoes are perfect for your daily runs.',
     },
     {
+      _id: '6',
       name: 'Levi\'s Slim Jeans',
       slug: 'levis-slim-jeans',
       category: 'Jeans',
@@ -72,7 +78,7 @@ const data = {
       numReviews: 12,
       description: 'Get the classic look with Levi\'s Slim Jeans. These timeless jeans offer a slim fit and enduring style, making them a wardrobe essential.',
     },
-    // Add descriptions for other products as needed...
+   
   ],
 };
 
