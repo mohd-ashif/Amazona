@@ -19,24 +19,24 @@ export default function CartScreen() {
   
     const updateCartHandler = async (item, quantity) => {
       const { data } = await axios.get(`/api/products/${item._id}`);
+
       if (data.countInStock < quantity) {
         window.alert('Sorry. Product is out of stock');
         return;
       }
       ctxDispatch({
         type: 'CART_ADD_ITEM',
-        payload: { ...item, quantity },
+        payload: { ...item , quantity },
       });
     };
-  
     const removeItemHandler = (item) => {
-        ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
-      };
-
-    const checkHandler =()=> {
-        navigate('/signin?redirect=/shipping');
-    }
-    
+      ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+    };
+  
+    const checkoutHandler = () => {
+      navigate('/signin?redirect=/shipping');
+    };
+  
 
   return (
     <div>
@@ -109,10 +109,10 @@ export default function CartScreen() {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <div className="d-grid ">
-                    <Button onClick={checkHandler}
+                  <Button
                       type="button"
-                      className="btn btn-warning"
                       variant="warning"
+                      onClick={checkoutHandler}
                       disabled={cartItems.length === 0}
                     >
                       Proceed to Checkout
