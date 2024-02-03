@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row'; 
@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Rating from '../component/Rating';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../component/LoadingBox';
-import MessageBox from '../component/MeassageBox';
+import MessageBox from '../component/MeassageBox'
 import { getError } from '../utils';
 import { Store } from '../Store';
 
@@ -28,6 +28,7 @@ const reducer = (state, action) => {
 };
 
 const ProductScreen = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
 
@@ -72,6 +73,7 @@ const ProductScreen = () => {
     } catch (error) {
       console.error("Error fetching product details:", error);
     }
+    navigate('/cart');
   };
 
   return (

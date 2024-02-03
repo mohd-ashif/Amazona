@@ -9,6 +9,7 @@ import { Store } from './Store';
 import HomeScreen from './Screen/HomeScreen';
 import ProductScreen from './Screen/ProductScreen';
 import cart_icon from "../public/images/cart_icon.png"
+import CartScreen from './Screen/CartScreen';
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
             <Container className='mt-3'>
               <Routes>
                 <Route path='/product/:slug' element={<ProductScreen />} />
+                <Route path="/cart" element={<CartScreen />} />
                 <Route path="/" element={<HomeScreen />} />
               </Routes>
             </Container>
