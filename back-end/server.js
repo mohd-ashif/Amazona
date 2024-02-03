@@ -1,37 +1,24 @@
-import express from "express";
-import cors from "cors"; // Import the cors middleware
-import data from "./data.js";
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import seedRouter from './routes/seedRoute.js';
+import productRouter from './routes/productRoute.js';
+dotenv.config();
+
+mongoose.connect(process.env.MONGODB_URI).then(() => {
+  console.log('connected to db');
+}).catch((err) => {
+  console.log(err.message);
+});
 
 const app = express();
 
-// Use cors middleware
+// Enable CORS globally
 app.use(cors());
 
-
-//all products
-app.get('/products', (req, res) => {
-  res.json(data.products);
-});
-
-// particular product
-app.get('/products/slug/:slug', (req, res) => {
-    const product = data.products.find((x) => x.slug === req.params.slug)
-   if(product){
-    res.send(product);
-   }else{
-    res.status(404).send({message:'Product Not Found'})
-   }
-  });
-
-  app.get('/products/:id', (req, res) => {
-    const product = data.products.find((x) => x._id === req.params.id)
-   if(product){
-    res.send(product);
-   }else{
-    res.status(404).send({message:'Product Not Found'})
-   }
-  });
-
+app.use('/seed', seedRouter);
+app.use('/products', productRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
