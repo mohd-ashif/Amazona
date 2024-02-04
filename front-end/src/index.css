@@ -65,3 +65,6 @@ body {
  .small-container {
   max-width: 600px;
 }
+.small-form-control {
+  font-size: 14px; 
+}
