@@ -5,6 +5,7 @@ import Rating from './Rating';
 import axios from 'axios';
 import { useContext } from 'react';
 import { Store } from '../Store';
+import { toast } from 'react-toastify';
 
 function Product(props) {
   const { product } = props;
@@ -21,7 +22,7 @@ function Product(props) {
   
     if (product.countInStock< quantity) {
       console.log('Product is out of stock'); 
-      window.alert('Sorry. Product is out of stock');
+      toast.warning('Sorry. Product is out of stock');
       return;
     }
   
@@ -30,7 +31,6 @@ function Product(props) {
       payload: { ...product, quantity },
     });
   };
-  
   
 
   return (
