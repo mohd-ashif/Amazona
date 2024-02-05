@@ -47,6 +47,9 @@ function reducer(state, action) {
             localStorage.setItem('cartItems', JSON.stringify(cartItems));
             return { ...state, cart: { ...state.cart, cartItems } };
           }
+          case 'CART_CLEAR':
+            return { ...state, cart: { ...state.cart, cartItems: [] } };
+      
           case 'USER_SIGNIN':
             return {...state, userInfo:action.payload}
 
@@ -67,12 +70,10 @@ function reducer(state, action) {
           };
 
           case 'SAVE_PAYMENT_METHOD':
-            return {...state, 
-                    cart  :{
-                     ...state.cart,
-                     PaymentMethod:action.payload,
-                    },
-           };
+            return {
+              ...state,
+              cart: { ...state.cart, paymentMethod: action.payload },
+            };
           
 
             default:

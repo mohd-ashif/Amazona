@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import seedRouter from './routes/seedRoute.js';
 import productRouter from './routes/productRoute.js';
 import userRouter from './routes/userRoutes.js';
+import orderRouter from './routes/orderRoute.js';
 dotenv.config();
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
@@ -24,6 +25,7 @@ app.use(cors());
 app.use('/seed', seedRouter);
 app.use('/products', productRouter);
 app.use('/users', userRouter)
+app.use('/orders', orderRouter)
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

@@ -31,7 +31,7 @@ export default function PaymentMethodScreen() {
   return (
     <div>
       <CheckoutSteps step1 step2 step3></CheckoutSteps>
-      <div className="small-container col-md-5">
+      <div className="container small-container">
         <Helmet>
           <title>Payment Method</title>
         </Helmet>
@@ -57,7 +57,7 @@ export default function PaymentMethodScreen() {
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>
-          <div className="mb-3">
+          <div className="mb-3" >
             <Button type="submit" variant='warning'>Continue</Button>
           </div>
         </Form>
