@@ -65,9 +65,6 @@ function HomeScreen() {
               </Col>
             ))}
           </Row>
-
-
-
         )}
       </div>
     </div>
