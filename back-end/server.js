@@ -26,6 +26,10 @@ app.use(express.urlencoded({ extended: true }));
 // Enable CORS globally
 app.use(cors());
 
+app.get('/keys/paypal', (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
+});
+
 app.use('/seed', seedRouter);
 app.use('/products', productRouter);
 app.use('/users', userRouter)
