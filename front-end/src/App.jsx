@@ -15,6 +15,7 @@ import cart_icon from "../public/images/cart_icon.png"
 import CartScreen from './Screen/CartScreen';
 import SigninScreen from './Screen/SigninScreen';
 import ShippingScreen from './Screen/ShippingScreen';
+import SignupScreen from './Screen/SignupScreen';
 
 
 function App() {
@@ -80,9 +81,9 @@ function App() {
                 <Route path='/product/:slug' element={<ProductScreen />} />
                 <Route path="/cart" element={<CartScreen />} />
                 <Route path="/signin" element={<SigninScreen />} />
+                <Route path="/signup" element={<SignupScreen/>} />
                 <Route path="/shipping"  element={<ShippingScreen />}></Route>
                 <Route path="/" element={<HomeScreen />} />
-               
               </Routes>
             </Container>
           </main>

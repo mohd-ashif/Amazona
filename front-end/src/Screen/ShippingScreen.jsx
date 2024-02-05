@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import CheckoutSteps from '../component/checkoutPages';
 
-const ShippingScreen = () => {
+const SignupScreen = () => {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
@@ -116,4 +116,4 @@ const ShippingScreen = () => {
   );
 };
 
-export default ShippingScreen;
+export default SignupScreen;

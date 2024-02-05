@@ -68,10 +68,12 @@ body {
 .small-form-control {
   font-size: 14px; 
 }
-
+ /* shippng page */
 .small-container{
  margin-left: 350px;
 }
+
+
  /* checkout-steps */
 .checkout-steps > div {
   border-bottom: 0.2rem solid #a0a0a0;
