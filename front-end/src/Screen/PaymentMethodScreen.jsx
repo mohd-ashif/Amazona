@@ -57,8 +57,8 @@ export default function PaymentMethodScreen() {
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>
-          <div className="mb-3" >
-            <Button type="submit" variant='warning'>Continue</Button>
+          <div className="mb-3">
+            <Button type="submit">Continue</Button>
           </div>
         </Form>
       </div>
