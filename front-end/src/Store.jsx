@@ -53,6 +53,7 @@ function reducer(state, action) {
               cartItems:[],
               shippingAddress:{}
             } }
+            
           case 'SAVE_SHIPPING_ADDRESS':
            return {...state, 
                    cart  :{

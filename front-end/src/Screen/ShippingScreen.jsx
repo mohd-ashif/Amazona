@@ -52,7 +52,7 @@ const ShippingScreen = () => {
       })
     );
 
-    // Navigate to the payment screen
+    
     navigate('/payment');
   };
 
@@ -106,7 +106,7 @@ const ShippingScreen = () => {
             />
           </Form.Group>
           <div className="mb-3">
-            <Button variant="primary" type="submit">
+            <Button variant="warning" type="submit">
               Continue
             </Button>
           </div>

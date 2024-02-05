@@ -68,3 +68,16 @@ body {
 .small-form-control {
   font-size: 14px; 
 }
+
+.small-container{
+ margin-left: 350px;
+}
+ /* checkout-steps */
+.checkout-steps > div {
+  border-bottom: 0.2rem solid #a0a0a0;
+  color: #a0a0a0;
+}
+.checkout-steps > div.active {
+  border-bottom: 0.2rem solid #f08000;
+  color: #f08000;
+}
