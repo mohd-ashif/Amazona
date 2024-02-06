@@ -24,7 +24,6 @@ export default function OrderHistoryScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
   const navigate = useNavigate();
-
  
   const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -36,76 +35,70 @@ export default function OrderHistoryScreen() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        
         const { data } = await axios.get(
           `http://localhost:5000/orders/mine`,
           {
             headers: { Authorization: `Bearer ${userInfo.token}` }
           }
         );
-       
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (error) {
-       
         dispatch({ type: 'FETCH_FAIL', payload: getError(error) });
       }
     };
-   
     if (userInfo) {
       fetchData();
     }
   }, [userInfo]);
 
   return (
-    <div>
+    <div className="container-fluid">
       <Helmet>
         <title>Order History</title>
       </Helmet>
       <h1>Order History</h1>
      
       {loading ? (
-        <LoadingBox></LoadingBox>
+        <LoadingBox />
       ) : error ? (
-      
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        
-        <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>DATE</th>
-              <th>TOTAL</th>
-              <th>PAID</th>
-              <th>DELIVERED</th>
-              <th>ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order._id}>
-                <td>{order._id}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
-                <td>{order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
-                <td>
-                  {order.isDelivered ? order.deliveredAt.substring(0, 10) : 'No'}
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-light"
-                    onClick={() => {
-                      navigate(`/order/${order._id}`);
-                    }}
-                  >
-                    Details
-                  </button>
-                </td>
+        <div className="table-responsive">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>DELIVERED</th>
+                <th>ACTIONS</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.totalPrice.toFixed(2)}</td>
+                  <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
+                  <td>
+                    {order.isDelivered ? order.deliveredAt.substring(0, 10) : 'No'}
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn-light"
+                      onClick={() => navigate(`/order/${order._id}`)}
+                    >
+                      Details
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
