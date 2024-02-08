@@ -26,13 +26,20 @@ orderRouter.post(
 
 orderRouter.get(
   '/mine',
-  isAuth,
+  isAuth, // Use the isAuth middleware to ensure authentication
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id });
-    res.send(orders);
+    try {
+      // Fetch orders for the authenticated user
+      const orders = await Order.find({ user: req.user._id });
+      // Send the orders as response
+      res.send(orders);
+    } catch (error) {
+      // Handle any errors that occur during the process
+      console.error('Error fetching orders:', error);
+      res.status(500).send({ message: 'Internal Server Error' });
+    }
   })
 );
-
 
 
 orderRouter.get(

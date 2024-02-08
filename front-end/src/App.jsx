@@ -11,15 +11,15 @@ import { Store } from './Store';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import HomeScreen from './Screen/HomeScreen';
 import ProductScreen from './Screen/ProductScreen';
-import CartScreen from './Screen/ProductScreen';
-import SigninScreen from "./Screen/SigninScreen"
-import SignupScreen from "./Screen/SignupScreen"
-import PlaceOrderScreen from "./Screen/PlaceOrderScreen"
-import OrderScreen from './Screen/OrderSreen'
+import CartScreen from './Screen/CartScreen';
+import SigninScreen from "./Screen/SigninScreen";
+import SignupScreen from "./Screen/SignupScreen";
+import PlaceOrderScreen from "./Screen/PlaceOrderScreen";
+import OrderScreen from './Screen/OrderSreen';
 import OrderHistoryScreen from './Screen/OrderHistoryScreen';
-import ShippingScreen from "./Screen/ShippingScreen"
-import PaymentMethodScreen from './Screen/PaymentMethodScreen'
-
+import ShippingScreen from "./Screen/ShippingScreen";
+import PaymentMethodScreen from './Screen/PaymentMethodScreen';
+import ProfileScreen from './Screen/ProfileScreen';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -102,16 +102,16 @@ function App() {
           <main>
             <Container className='mt-3'>
               <Routes>
-                <Route path='/product/:slug' element={<ProductScreen />} />
+                <Route path="/products/:slug" element={<ProductScreen />} />
                 <Route path="/cart" element={<CartScreen />} />
                 <Route path="/signin" element={<SigninScreen />} />
-                <Route path="/signup" element={<SignupScreen/>} />
-                <Route path="/placeorder" element={<PlaceOrderScreen/>} />
-                
-                <Route path="/order/:id"  element={<OrderScreen />}></Route>
-                <Route path="/orderhistory"  element={<OrderHistoryScreen />}></Route>
-                <Route path="/shipping"  element={<ShippingScreen />}></Route>
-                <Route path="/payment"  element={<PaymentMethodScreen />}></Route>
+                <Route path="/signup" element={<SignupScreen />} />
+                <Route path="/placeorder" element={<PlaceOrderScreen />} />
+                <Route path="/profile" element={<ProfileScreen />} />
+                <Route path="/order/:id" element={<OrderScreen />} />
+                <Route path="/orderhistory" element={<OrderHistoryScreen />} />
+                <Route path="/shipping" element={<ShippingScreen />} />
+                <Route path="/payment" element={<PaymentMethodScreen />} />
                 <Route path="/" element={<HomeScreen />} />
               </Routes>
             </Container>

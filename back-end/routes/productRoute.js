@@ -1,11 +1,7 @@
 import express from 'express';
-import cors from 'cors';
 import Product from '../model/productModel.js';
 
 const app = express();
-
-// Enable CORS for all routes
-app.use(cors());
 
 const productRouter = express.Router();
 
