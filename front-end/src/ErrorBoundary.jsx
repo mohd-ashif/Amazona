@@ -12,7 +12,7 @@ class ErrorBoundary extends Component {
 
   componentDidCatch(error, errorInfo) {
     this.setState({ errorInfo });
-    // You can log the error to an error reporting service here
+    
     console.error('Error caught by ErrorBoundary:', error, errorInfo);
   }
 
@@ -21,7 +21,7 @@ class ErrorBoundary extends Component {
       return (
         <div>
           <h2>Something went wrong.</h2>
-          {/* Display more error details if needed */}
+        
           {this.state.error && <p>Error: {this.state.error.toString()}</p>}
           {this.state.errorInfo && (
             <p>Component Stack Trace: {this.state.errorInfo.componentStack}</p>
