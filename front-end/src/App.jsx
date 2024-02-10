@@ -24,6 +24,7 @@ import PaymentMethodScreen from './Screen/PaymentMethodScreen';
 import ProfileScreen from './Screen/ProfileScreen';
 import { getError } from './utils';
 import axios from 'axios';
+import SearchBox from './component/SearchBox';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -74,10 +75,12 @@ function App() {
 
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav'>
+
                   <Nav className='me-auto w-100 justify-content-end'>
                     <LinkContainer to='/'>
                       <Navbar.Brand>amazona</Navbar.Brand>
                     </LinkContainer>
+                    <SearchBox />
                     <Nav className='me-auto w-100 justify-content-end'>
                       <Link to='/cart' className='nav-link'>
                         Cart{' '}
