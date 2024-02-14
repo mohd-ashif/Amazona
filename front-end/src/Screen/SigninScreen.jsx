@@ -60,7 +60,7 @@ export default function SigninScreen() {
           <Form.Control type="password" required  onChange={(e)=> setPassword(e.target.value)} />
         </Form.Group>
         <div className="mb-3">
-          <Button className='btn btn-warning' type="submit">Sign In</Button>
+          <Button className='btn btn-secondary' type="submit">Sign In</Button>
         </div>
         <div className="mb-3">
           New customer?{' '}

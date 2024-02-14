@@ -43,6 +43,7 @@ export default function PaymentMethodScreen() {
               id="PayPal"
               label="PayPal"
               value="PayPal"
+              
               checked={paymentMethodName === 'PayPal'}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
@@ -58,7 +59,7 @@ export default function PaymentMethodScreen() {
             />
           </div>
           <div className="mb-3">
-            <Button type="submit">Continue</Button>
+            <Button type="submit" variant='secondary'>Continue</Button>
           </div>
         </Form>
       </div>

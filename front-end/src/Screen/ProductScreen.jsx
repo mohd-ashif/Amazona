@@ -136,7 +136,7 @@ const ProductScreen = () => {
                     {product.countInStock > 0 && (
                       <ListGroup.Item>
                         <div className="d-grid">
-                          <Button onClick={addToCartHandler} variant="warning">Add to Cart</Button>
+                          <Button onClick={addToCartHandler} variant="dark">Add to Cart</Button>
                         </div>
                       </ListGroup.Item>
                     )}

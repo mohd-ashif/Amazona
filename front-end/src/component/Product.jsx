@@ -49,7 +49,7 @@ function Product(props) {
             Out of stock
           </Button>
         ) : (
-          <Button className='btn btn-warning' onClick={() => addToCartHandler(product)}>Add to cart</Button>
+          <Button className='btn btn-dark' onClick={() => addToCartHandler(product)}>Add to cart</Button>
         )}
       </Card.Body>
     </Card>

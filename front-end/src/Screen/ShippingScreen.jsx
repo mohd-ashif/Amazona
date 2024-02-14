@@ -106,7 +106,7 @@ const SignupScreen = () => {
             />
           </Form.Group>
           <div className="mb-3">
-            <Button variant="warning" type="submit">
+            <Button variant="secondary" type="submit">
               Continue
             </Button>
           </div>

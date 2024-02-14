@@ -9,6 +9,8 @@ import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Store } from './Store';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import HomeScreen from './Screen/HomeScreen';
@@ -25,6 +27,7 @@ import ProfileScreen from './Screen/ProfileScreen';
 import { getError } from './utils';
 import axios from 'axios';
 import SearchBox from './component/SearchBox';
+import  SearchScreen  from './Screen/SearchScreen';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -66,30 +69,29 @@ function App() {
           <header>
             <Navbar bg='dark' variant='dark' expand='lg'>
               <Container>
-                <Button
-                  variant="dark"
-                  onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-                >
-                  <i className="fas fa-bars"></i>
-                </Button>
+              
 
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav'>
 
                   <Nav className='me-auto w-100 justify-content-end'>
                     <LinkContainer to='/'>
-                      <Navbar.Brand>amazona</Navbar.Brand>
+                      <Navbar.Brand>E-commerce</Navbar.Brand>
                     </LinkContainer>
-                    <SearchBox />
+                    
+                 
                     <Nav className='me-auto w-100 justify-content-end'>
-                      <Link to='/cart' className='nav-link'>
-                        Cart{' '}
-                        {cart.cartItems.length > 0 && (
-                          <Badge pill bg='danger'>
-                            {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                          </Badge>
-                        )}
-                      </Link>
+                    <SearchBox />
+                    <Link to='/cart' className='nav-link'>
+  <FontAwesomeIcon icon={faShoppingCart} style={{ color: 'white' }} />
+  {cart.cartItems.length > 0 && (
+    <Badge pill bg='danger'>
+      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+    </Badge>
+  )}
+</Link>
+
+                      
                       {userInfo ? (
                         <NavDropdown title={userInfo.name} id='basic-nav-dropdown'>
                           <LinkContainer to='/profile'>
@@ -98,6 +100,7 @@ function App() {
                           <LinkContainer to='/orderhistory'>
                             <NavDropdown.Item>Order History</NavDropdown.Item>
                           </LinkContainer>
+                          
                           <NavDropdown.Divider />
                           <Link
                             className='dropdown-item'
@@ -106,6 +109,7 @@ function App() {
                           >
                             Sign Out
                           </Link>
+                          
                         </NavDropdown>
                       ) : (
                         <Link className='nav-link' to='/signin'>
@@ -135,7 +139,7 @@ function App() {
             </Navbar>
           </header>
 
-          <div
+          {/* <div
             className={
               sidebarIsOpen
                 ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
@@ -159,13 +163,15 @@ function App() {
                 </Nav.Item>
               ))}
             </Nav>
-          </div>
+          </div> */}
 
           <main>
-            <Container className='mt-3'>
+          <Container className='mt-3  '>
+            
               <Routes>
                 <Route path="/product/:slug" element={<ProductScreen />} />
                 <Route path="/cart" element={<CartScreen />} />
+                <Route path="/search" element={<SearchScreen />} />
                 <Route path="/signin" element={<SigninScreen />} />
                 <Route path="/signup" element={<SignupScreen />} />
                 <Route path="/placeorder" element={<PlaceOrderScreen />} />

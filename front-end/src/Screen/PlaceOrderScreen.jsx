@@ -180,6 +180,7 @@ export default function PlaceOrderScreen() {
                   <div className="d-grid">
                     <Button
                       type="button"
+                      variant='secondary'
                       onClick={placeOrderHandler}
                       disabled={cart.cartItems.length === 0 || loading}
                     >

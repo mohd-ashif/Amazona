@@ -110,7 +110,7 @@ export default function CartScreen() {
                   <div className="d-grid ">
                   <Button
                       type="button"
-                      variant="warning"
+                      variant="dark"
                       onClick={checkoutHandler}
                       disabled={cartItems.length === 0}
                     >

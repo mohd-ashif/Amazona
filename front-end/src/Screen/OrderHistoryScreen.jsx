@@ -88,7 +88,7 @@ export default function OrderHistoryScreen() {
                   <td>
                     <button
                       type="button"
-                      className="btn btn-light"
+                      className="btn btn-secondary"
                       onClick={() => navigate(`/order/${order._id}`)}
                     >
                       Details
