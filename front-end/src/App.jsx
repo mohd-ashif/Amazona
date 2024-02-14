@@ -28,6 +28,9 @@ import { getError } from './utils';
 import axios from 'axios';
 import SearchBox from './component/SearchBox';
 import  SearchScreen  from './Screen/SearchScreen';
+import AdminRoute from './component/AdminRoute';
+import Dashboard from './Screen/Dashboard';
+import ProtectedRoute from './component/ProtectRoute';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -139,31 +142,7 @@ function App() {
             </Navbar>
           </header>
 
-          {/* <div
-            className={
-              sidebarIsOpen
-                ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
-                : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
-            }
-          >
-            <Nav className="flex-column text-white w-100 p-2">
-              <Nav.Item>
-                <strong>Categories</strong>
-              </Nav.Item>
-              {categories.map((category) => (
-                <Nav.Item key={category}>
-                  <Nav.Link
-                    as={Link}
-                    to={`/search?category=${category}`}
-                    onClick={() => setSidebarIsOpen(false)}
-                  >
-                    {category}
-                  </Nav.Link>
-
-                </Nav.Item>
-              ))}
-            </Nav>
-          </div> */}
+       
 
           <main>
           <Container className='mt-3  '>
@@ -174,10 +153,18 @@ function App() {
                 <Route path="/search" element={<SearchScreen />} />
                 <Route path="/signin" element={<SigninScreen />} />
                 <Route path="/signup" element={<SignupScreen />} />
+
+
+                  {/* Admin Routes */}
+              <Route path="/admin/dashboard"  element={<AdminRoute><Dashboard />
+              </AdminRoute >}></Route>
+
                 <Route path="/placeorder" element={<PlaceOrderScreen />} />
-                <Route path="/profile" element={<ProfileScreen />} />
-                <Route path="/order/:id" element={<OrderScreen />} />
-                <Route path="/orderhistory" element={<OrderHistoryScreen />} />
+                <Route path="/profile" element={ <ProtectedRoute> <ProfileScreen /> </ProtectedRoute> }/>
+                <Route
+                path="/order/:id"
+                element={<ProtectedRoute><OrderScreen /> </ProtectedRoute>}></Route>
+                <Route path="/orderhistory"    element={ <ProtectedRoute> <OrderHistoryScreen /> </ProtectedRoute>} />
                 <Route path="/shipping" element={<ShippingScreen />} />
                 <Route path="/payment" element={<PaymentMethodScreen />} />
                 <Route path="/" element={<HomeScreen />} />

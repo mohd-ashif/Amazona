@@ -19,13 +19,13 @@ function Product(props) {
   
     const existItem = cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-  
+
     if (product.countInStock< quantity) {
       console.log('Product is out of stock'); 
       toast.warning('Sorry. Product is out of stock');
       return;
     }
-  
+     
     ctxDispatch({
       type: 'CART_ADD_ITEM',
       payload: { ...product, quantity },
