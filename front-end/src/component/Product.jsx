@@ -23,7 +23,7 @@ function Product(props) {
     if (product.countInStock< quantity) {
       console.log('Product is out of stock'); 
       toast.warning('Sorry. Product is out of stock');
-      return;
+    
     }
      
     ctxDispatch({

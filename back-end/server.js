@@ -8,9 +8,7 @@ import userRouter from './routes/userRoutes.js';
 import orderRouter from './routes/orderRoute.js';
 dotenv.config();
 
-mongoose.connect(process.env.MONGODB_URI, {
- 
-})
+mongoose.connect(process.env.MONGODB_URI, {})
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error('MongoDB connection error:', error));
 
@@ -18,8 +16,6 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Enable CORS globally

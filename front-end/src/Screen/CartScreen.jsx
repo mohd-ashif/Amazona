@@ -43,8 +43,8 @@ export default function CartScreen() {
         <title>Shopping Cart</title>
       </Helmet>
       <h1>Shopping Cart</h1>
-      <Row>
-        <Col md={8}>
+      <Row >
+        <Col md={8} >
           {cartItems.length === 0 ? (
             <MessageBox>
               Cart is empty. <Link to="/">Go Shopping</Link>
@@ -83,7 +83,7 @@ export default function CartScreen() {
                         <i className="fas fa-plus-circle"></i>
                       </Button>
                     </Col>
-                    <Col md={3}>${item.price}</Col>
+                    <Col md={3}  >${item.price}</Col>
                     <Col md={2}>
                       <Button onClick={()=> removeItemHandler(item)}
                        variant="light">

@@ -1,6 +1,7 @@
 import express from 'express';
 import Product from '../model/productModel.js';
 import expressAsyncHandler from 'express-async-handler';
+import { isAdmin, isAuth } from '../utils.js';
 
 const app = express();
 
@@ -65,7 +66,19 @@ productRouter.get(
   })
 );
 
+// Admin products
+productRouter.get(
+  '/admin',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+   
 
+    const products = await Product.find()
+    
+    res.send(products);
+  })
+);
 
 
 export default productRouter

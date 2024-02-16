@@ -27,10 +27,11 @@ import ProfileScreen from './Screen/ProfileScreen';
 import { getError } from './utils';
 import axios from 'axios';
 import SearchBox from './component/SearchBox';
-import  SearchScreen  from './Screen/SearchScreen';
+import SearchScreen from './Screen/SearchScreen';
 import AdminRoute from './component/AdminRoute';
 import Dashboard from './Screen/Dashboard';
 import ProtectedRoute from './component/ProtectRoute';
+import ProductListScreen from './Screen/ProductListScreen';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -72,7 +73,7 @@ function App() {
           <header>
             <Navbar bg='dark' variant='dark' expand='lg'>
               <Container>
-              
+
 
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav'>
@@ -81,20 +82,19 @@ function App() {
                     <LinkContainer to='/'>
                       <Navbar.Brand>E-commerce</Navbar.Brand>
                     </LinkContainer>
-                    
-                 
-                    <Nav className='me-auto w-100 justify-content-end'>
-                    <SearchBox />
-                    <Link to='/cart' className='nav-link'>
-  <FontAwesomeIcon icon={faShoppingCart} style={{ color: 'white' }} />
-  {cart.cartItems.length > 0 && (
-    <Badge pill bg='danger'>
-      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-    </Badge>
-  )}
-</Link>
 
-                      
+                    <Nav className='me-auto w-100 justify-content-end'>
+                      <SearchBox />
+                      <Link to='/cart' className='nav-link'>
+                        <FontAwesomeIcon icon={faShoppingCart} style={{ color: 'white' }} />
+                        {cart.cartItems.length > 0 && (
+                          <Badge pill bg='danger'>
+                            {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                          </Badge>
+                        )}
+                      </Link>
+
+
                       {userInfo ? (
                         <NavDropdown title={userInfo.name} id='basic-nav-dropdown'>
                           <LinkContainer to='/profile'>
@@ -103,7 +103,7 @@ function App() {
                           <LinkContainer to='/orderhistory'>
                             <NavDropdown.Item>Order History</NavDropdown.Item>
                           </LinkContainer>
-                          
+
                           <NavDropdown.Divider />
                           <Link
                             className='dropdown-item'
@@ -112,7 +112,7 @@ function App() {
                           >
                             Sign Out
                           </Link>
-                          
+
                         </NavDropdown>
                       ) : (
                         <Link className='nav-link' to='/signin'>
@@ -124,7 +124,7 @@ function App() {
                           <LinkContainer to='/admin/dashboard'>
                             <NavDropdown.Item>Dashboard</NavDropdown.Item>
                           </LinkContainer>
-                          <LinkContainer to='/admin/products'>
+                          <LinkContainer to="/admin/products">
                             <NavDropdown.Item>Products</NavDropdown.Item>
                           </LinkContainer>
                           <LinkContainer to='/admin/orders'>
@@ -142,11 +142,11 @@ function App() {
             </Navbar>
           </header>
 
-       
+
 
           <main>
-          <Container className='mt-3  '>
-            
+            <Container className='mt-3  '>
+
               <Routes>
                 <Route path="/product/:slug" element={<ProductScreen />} />
                 <Route path="/cart" element={<CartScreen />} />
@@ -155,16 +155,18 @@ function App() {
                 <Route path="/signup" element={<SignupScreen />} />
 
 
-                  {/* Admin Routes */}
-              <Route path="/admin/dashboard"  element={<AdminRoute><Dashboard />
-              </AdminRoute >}></Route>
+                {/* Admin Routes */}
+                <Route path="/admin/dashboard" element={<AdminRoute><Dashboard />
+                </AdminRoute >}></Route>
+
+                <Route path="/admin/products" element={<AdminRoute><ProductListScreen /> </AdminRoute>} ></Route>
 
                 <Route path="/placeorder" element={<PlaceOrderScreen />} />
-                <Route path="/profile" element={ <ProtectedRoute> <ProfileScreen /> </ProtectedRoute> }/>
+                <Route path="/profile" element={<ProtectedRoute> <ProfileScreen /> </ProtectedRoute>} />
                 <Route
-                path="/order/:id"
-                element={<ProtectedRoute><OrderScreen /> </ProtectedRoute>}></Route>
-                <Route path="/orderhistory"    element={ <ProtectedRoute> <OrderHistoryScreen /> </ProtectedRoute>} />
+                  path="/order/:id"
+                  element={<ProtectedRoute><OrderScreen /> </ProtectedRoute>}></Route>
+                <Route path="/orderhistory" element={<ProtectedRoute> <OrderHistoryScreen /> </ProtectedRoute>} />
                 <Route path="/shipping" element={<ShippingScreen />} />
                 <Route path="/payment" element={<PaymentMethodScreen />} />
                 <Route path="/" element={<HomeScreen />} />

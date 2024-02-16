@@ -26,6 +26,7 @@ export default function PaymentMethodScreen() {
     e.preventDefault();
     ctxDispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethodName });
     localStorage.setItem('paymentMethod', paymentMethodName);
+    window.location.reload();
     navigate('/placeorder');
   };
   return (
