@@ -26,10 +26,10 @@ orderRouter.post(
 
 orderRouter.get(
   '/mine',
-  isAuth,   
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     try {
-      const orders = await Order.find({ user: req.user._id }); 
+      const orders = await Order.find({ }); 
       res.send(orders);
     } catch (error) {
       
@@ -75,5 +75,37 @@ orderRouter.get(
       }
     })
   );
+
+  orderRouter.get('/', isAdmin, isAuth, expressAsyncHandler(async (req, res) => {
+    try {
+      const orders = await Order.find({ }); 
+      res.send(orders);
+    } catch (error) {
+      
+      console.error('Error fetching orders:', error);
+      res.status(500).send({ message: 'Internal Server Error' });
+    }
+  })
+);
+  
+ orderRouter.put('/:id/accept', isAdmin, isAuth, expressAsyncHandler(async (req, res)=> {
+     
+  try {
+    const id = req.params.id
+
+    const accept= await Order.findByIdAndUpdate(id, {isDelivered : true}, {new :true})
+
+    if (!accept){
+      return res.status(404).json({message:"order not found"})
+    }
+    res.status(200).json({message: "update succsfully ", order: accept})
+    
+  } catch (error) {
+    res.status(500).json({message: "Internal server"})
+    
+  }
+ }))
+  
+  
 
 export default orderRouter;
