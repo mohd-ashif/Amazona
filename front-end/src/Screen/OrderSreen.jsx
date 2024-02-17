@@ -244,7 +244,7 @@ export default function OrderScreen() {
                       <LoadingBox />
                     ) : (
                       <div>
-                        <PayPalButtons
+                         <PayPalButtons
                           createOrder={createOrder}
                           onApprove={onApprove}
                           onError={onError}

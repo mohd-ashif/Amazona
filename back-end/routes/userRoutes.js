@@ -68,4 +68,16 @@ userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
       }
     })
   );
+
+  userRouter.get('/', isAuth, expressAsyncHandler ( async (req, res)=> {
+    const users = await User.find({})
+     if (users){
+      res.send(users)
+
+     }
+     else {
+      res.status(404).send({ message: 'User not found' });
+    }
+  }))
+
 export default userRouter;

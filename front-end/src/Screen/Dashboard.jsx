@@ -11,7 +11,7 @@ const Dashboard = () => {
             <div className="card-body">
               <h2 className="card-title">Add Product</h2>
               <p className="card-text">Add a new product to the store.</p>
-              <Link to="/admin/create" className="btn btn-primary">Add Product</Link>
+              <Link to="/admin/create" className="btn btn-dark">Add Product</Link>
             </div>
           </div>
         </div>
@@ -20,7 +20,7 @@ const Dashboard = () => {
             <div className="card-body">
               <h2 className="card-title">List Products</h2>
               <p className="card-text">View and manage existing products.</p>
-              <Link to="/admin/products" className="btn btn-primary">List Products</Link>
+              <Link to="/admin/products" className="btn btn-dark">List Products</Link>
             </div>
           </div>
         </div>
@@ -29,7 +29,7 @@ const Dashboard = () => {
             <div className="card-body">
               <h2 className="card-title">Orders</h2>
               <p className="card-text">View and manage orders.</p>
-              <Link to="/admin/orders" className="btn btn-primary">View Orders</Link>
+              <Link to="/admin/orders" className="btn btn-dark">View Orders</Link>
             </div>
           </div>
         </div>
