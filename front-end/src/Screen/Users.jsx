@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../component/LoadingBox';
 import MessageBox from '../component/MeassageBox'; 
 import { Store } from '../Store';
-import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { getError } from '../utils';
 
@@ -23,8 +22,6 @@ const reducer = (state, action) => {
 export default function ProductListScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const { id } = useParams();
-  const navigate = useNavigate();
  
   const [{ loading, error, users }, dispatch] = useReducer(reducer, {
     loading: true,
