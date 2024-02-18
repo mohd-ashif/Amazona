@@ -76,11 +76,9 @@ export default function ProductListScreen() {
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.isAdmin ? 'Yes' : 'No'}</td>
-
-                    
-                    
-                    
-                    
+                    <td>
+                      <button type='button' className='btn btn-danger' >delete</button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

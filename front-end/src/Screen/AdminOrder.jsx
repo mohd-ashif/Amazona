@@ -9,7 +9,6 @@ import { getError } from '../utils';
 import { toast } from 'react-toastify';
 import { BiCheck, BiX } from 'react-icons/bi';
 
-
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -59,13 +58,12 @@ export default function Admin() {
 
   const acceptOrder = async (orderId) => {
     try {
-     ;
       const response = await axios.put(`http://localhost:5000/orders/${orderId}/accept`, null, {
         headers: { Authorization: `Bearer ${userInfo.token}` }
       });
       if (response.status === 200) {
         toast('Order accepted successfully.');
-        window.location.reload()
+        fetchData(); 
       } else {
         toast('Failed to accept order.');
       }
@@ -81,10 +79,9 @@ export default function Admin() {
       });
       if (!response.data) {
         throw new Error('Failed to delete order');
-        
       } else {
         toast('Order deleted successfully');
-        window.location.reload()
+        fetchData(); 
       }
     } catch (error) {
       toast('Failed to delete order.');
@@ -92,62 +89,61 @@ export default function Admin() {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container mx-auto">
       <Helmet>
         <title>Order History</title>
       </Helmet>
-      <h1>Order History</h1>
+      <h1 className="text-4xl font-bold text-center mt-8 mb-4">Order History</h1>
 
       {loading ? (
         <LoadingBox />
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <div className="table-responsive">
-          <table className="table">
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full text-left border-collapse border border-gray-300">
             <thead>
-              <tr>
-                <th>ID</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
-                <th>ACTIONS</th>
-                <th>DELETE</th>
+              <tr className="bg-gray-100">
+                <th className="px-4 py-2">ID</th>
+                <th className="px-4 py-2">DATE</th>
+                <th className="px-4 py-2">TOTAL</th>
+                <th className="px-4 py-2">PAID</th>
+                <th className="px-4 py-2">DELIVERED</th>
+                <th className="px-4 py-2">ACTIONS</th>
+                <th className="px-4 py-2">DELETE</th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order) => (
-                <tr key={order._id}>
-                  <td>{order._id}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
-                  <td>{order.totalPrice.toFixed(2)}</td>
-                  <td>{order.isPaid ? <BiCheck style={{ fontSize: '24px', color: "green" }} /> : <BiX style={{ fontSize: '24px', color: "red" }} />}</td>
-                  <td>{order.isDelivered ? <BiCheck style={{ fontSize: '24px', color: "green" }} /> : <BiX style={{ fontSize: '24px', color: "red" }} />}</td>
-                  <td>
+                <tr key={order._id} className="border-b border-gray-300">
+                  <td className="px-4 py-2">{order._id}</td>
+                  <td className="px-4 py-2">{order.createdAt.substring(0, 10)}</td>
+                  <td className="px-4 py-2">{order.totalPrice.toFixed(2)}</td>
+                  <td className="px-4 py-2">{order.isPaid ? <BiCheck className="text-green-500" /> : <BiX className="text-red-500" />}</td>
+                  <td className="px-4 py-2">{order.isDelivered ? <BiCheck className="text-green-500" /> : <BiX className="text-red-500" />}</td>
+                  <td className="px-4 py-2">
                     {order.isPaid ? (
-                      <div>
-                        <button
-                          type="button"
-                          className="btn btn-success"
-                          onClick={() => acceptOrder(order._id)}
-                        >
-                          Delivery
-                        </button>
-                      </div>
+                      <button
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                        onClick={() => acceptOrder(order._id)}
+                      >
+                        Approve
+                      </button>
                     ) : (
                       <button
-                        type="button"
-                        className="btn btn-light"
+                        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded cursor-pointer"
+                        disabled
                       >
                         Pending
                       </button>
                     )}
                   </td>
-                  <td>
-                    <button type="button"
-                      className="btn btn-danger" onClick={() => handleDelete(order._id)}> delete
-
+                  <td className="px-3 py-1">
+                    <button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => handleDelete(order._id)}
+                    >
+                      Delete
                     </button>
                   </td>
                 </tr>

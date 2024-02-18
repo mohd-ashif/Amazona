@@ -1,8 +1,8 @@
 import React, { useContext, useReducer, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../component/LoadingBox';
-import MessageBox from '../component/MeassageBox'; 
-import { Store } from '../Store'; 
+import MessageBox from '../component/MeassageBox';
+import { Store } from '../Store';
 import axios from 'axios';
 import { getError } from '../utils';
 
@@ -22,7 +22,7 @@ const reducer = (state, action) => {
 export default function ProductListScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
- 
+
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
@@ -48,43 +48,42 @@ export default function ProductListScreen() {
       fetchData();
     }
   }, [userInfo]);
-  
+
   return (
-    <div className="container-fluid">
+    <div className="container mx-auto">
       <Helmet>
         <title>Products List</title>
       </Helmet>
-      <h1>Products List</h1>
-     
+      <h1 className="text-4xl font-bold text-center mt-8 mb-4">Products List</h1>
+
       {loading ? (
         <LoadingBox />
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <div className="table-responsive">
-          <table className="table">
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full text-left border-collapse border border-gray-300">
             <thead>
-              <tr>
-                <th>Name</th>
-                <th>Slug</th>
-                <th>Brand</th>
-                <th>Price</th>
-                <th>category</th>
-                <th>Action</th>
+              <tr className="bg-gray-100">
+                <th className="px-4 py-2">Name</th>
+                <th className="px-4 py-2">Slug</th>
+                <th className="px-4 py-2">Brand</th>
+                <th className="px-4 py-2">Price</th>
+                <th className="px-4 py-2">Category</th>
+                <th className="px-4 py-2">Action</th>
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => ( 
-                <tr key={product._id}>
-                  <td>{product.name}</td>
-                  <td>{product.slug}</td>
-                  <td>{product.brand}</td>
-                  <td>${product.price}</td>
-                  <td>{product.category}</td>
-                  <td>
+              {products.map((product) => (
+                <tr key={product._id} className="border-b border-gray-300">
+                  <td className="px-4 py-2">{product.name}</td>
+                  <td className="px-4 py-2">{product.slug}</td>
+                  <td className="px-4 py-2">{product.brand}</td>
+                  <td className="px-4 py-2">${product.price}</td>
+                  <td className="px-4 py-2">{product.category}</td>
+                  <td className="px-4 py-2">
                     <button
-                      type="button"
-                      className="btn btn-secondary"
+                      className="bg-blue-950 hover:bg-slate-400 text-white font-bold py-2 px-4 rounded"
                       onClick={() => navigate(`/product/${product.slug}`)}
                     >
                       Go To
