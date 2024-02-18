@@ -24,6 +24,7 @@ orderRouter.post(
   })
 );
 
+
 orderRouter.get(
   '/mine',
   isAuth,
@@ -38,6 +39,7 @@ orderRouter.get(
     }
   })
 );
+
 
 orderRouter.get(
     '/:id',
@@ -76,35 +78,51 @@ orderRouter.get(
     })
   );
 
-  orderRouter.get('/', isAdmin, isAuth, expressAsyncHandler(async (req, res) => {
+  orderRouter.get('/', isAdmin, expressAsyncHandler(async (req, res) => {
     try {
-      const orders = await Order.find({ }); 
+      const orders = await Order.find({});
       res.send(orders);
     } catch (error) {
-      
       console.error('Error fetching orders:', error);
       res.status(500).send({ message: 'Internal Server Error' });
     }
-  })
-);
+  }));
   
- orderRouter.put('/:id/accept', isAdmin, isAuth, expressAsyncHandler(async (req, res)=> {
-     
-  try {
-    const id = req.params.id
-
-    const accept= await Order.findByIdAndUpdate(id, {isDelivered : true}, {new :true})
-
-    if (!accept){
-      return res.status(404).json({message:"order not found"})
+  orderRouter.put('/:id/accept', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+    try {
+      const id = req.params.id;
+      const order = await Order.findById(id);
+  
+      if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+  
+      order.isDelivered = true;
+      order.deliveredAt = Date.now(); 
+      const updatedOrder = await order.save();
+  
+      res.status(200).json({ message: "Order updated successfully", order: updatedOrder });
+    } catch (error) {
+      console.error('Error accepting order:', error);
+      res.status(500).json({ message: "Internal server error" });
     }
-    res.status(200).json({message: "update succsfully ", order: accept})
-    
-  } catch (error) {
-    res.status(500).json({message: "Internal server"})
-    
-  }
- }))
+  }));
+  
+  orderRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+    try {
+      const id = req.params.id;
+      const order = await Order.findByIdAndDelete(id);
+  
+      if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+  
+      res.status(200).json({ message: "Order deleted successfully", order });
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }));
   
   
 

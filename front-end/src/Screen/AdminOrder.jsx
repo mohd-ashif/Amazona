@@ -1,12 +1,14 @@
 import React, { useContext, useReducer, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../component/LoadingBox';
-import MessageBox from '../component/MeassageBox'; 
+import MessageBox from '../component/MeassageBox';
 import { Store } from '../Store';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
+import { BiCheck, BiX } from 'react-icons/bi';
+
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -24,10 +26,10 @@ const reducer = (state, action) => {
 export default function Admin() {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const {id} = useParams()
+  const { id } = useParams()
 
   const navigate = useNavigate();
- 
+
   const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
@@ -49,6 +51,7 @@ export default function Admin() {
         dispatch({ type: 'FETCH_FAIL', payload: getError(error) });
       }
     };
+
     if (userInfo) {
       fetchData();
     }
@@ -56,19 +59,37 @@ export default function Admin() {
 
   const acceptOrder = async (orderId) => {
     try {
-        const response = await axios.put(`http://localhost:5000/orders/${orderId}/accept`   );
-        if (response.status === 200) {
-            toast('Order accepted successfully.');
-            // Refresh orders list after accepting the order
-            fetchData();
-        } else {
-            toast('Failed to accept order.');
-        }
-    } catch (error) {
+     ;
+      const response = await axios.put(`http://localhost:5000/orders/${orderId}/accept`, null, {
+        headers: { Authorization: `Bearer ${userInfo.token}` }
+      });
+      if (response.status === 200) {
+        toast('Order accepted successfully.');
+        window.location.reload()
+      } else {
         toast('Failed to accept order.');
+      }
+    } catch (error) {
+      toast('Failed to accept order.');
     }
-};
+  };
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/orders/${id}`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` }
+      });
+      if (!response.data) {
+        throw new Error('Failed to delete order');
+        
+      } else {
+        toast('Order deleted successfully');
+        window.location.reload()
+      }
+    } catch (error) {
+      toast('Failed to delete order.');
+    }
+  };
 
   return (
     <div className="container-fluid">
@@ -76,7 +97,7 @@ export default function Admin() {
         <title>Order History</title>
       </Helmet>
       <h1>Order History</h1>
-     
+
       {loading ? (
         <LoadingBox />
       ) : error ? (
@@ -92,6 +113,7 @@ export default function Admin() {
                 <th>PAID</th>
                 <th>DELIVERED</th>
                 <th>ACTIONS</th>
+                <th>DELETE</th>
               </tr>
             </thead>
             <tbody>
@@ -100,24 +122,33 @@ export default function Admin() {
                   <td>{order._id}</td>
                   <td>{order.createdAt.substring(0, 10)}</td>
                   <td>{order.totalPrice.toFixed(2)}</td>
-                  <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
-                  <td>{order.isDelivered ? order.deliveredAt.substring(0, 10) : 'No'}</td>
+                  <td>{order.isPaid ? <BiCheck style={{ fontSize: '24px', color: "green" }} /> : <BiX style={{ fontSize: '24px', color: "red" }} />}</td>
+                  <td>{order.isDelivered ? <BiCheck style={{ fontSize: '24px', color: "green" }} /> : <BiX style={{ fontSize: '24px', color: "red" }} />}</td>
                   <td>
-                    {order.isPaid ?( // Render button only if order is paid
+                    {order.isPaid ? (
+                      <div>
+                        <button
+                          type="button"
+                          className="btn btn-success"
+                          onClick={() => acceptOrder(order._id)}
+                        >
+                          Delivery
+                        </button>
+                      </div>
+                    ) : (
                       <button
                         type="button"
-                        className="btn btn-success"
-                        onClick={() => acceptOrder(order._id)}
+                        className="btn btn-light"
                       >
-                        Delivery  
+                        Pending
                       </button>
-                    ) :   <button
-                    type="button"
-                    className="btn btn-danger"
-                  
-                  >
-                   pending
-                  </button>}
+                    )}
+                  </td>
+                  <td>
+                    <button type="button"
+                      className="btn btn-danger" onClick={() => handleDelete(order._id)}> delete
+
+                    </button>
                   </td>
                 </tr>
               ))}
