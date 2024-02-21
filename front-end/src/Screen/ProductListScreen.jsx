@@ -4,7 +4,9 @@ import LoadingBox from '../component/LoadingBox';
 import MessageBox from '../component/MeassageBox';
 import { Store } from '../Store';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { getError } from '../utils';
+import { toast } from 'react-toastify';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -22,6 +24,7 @@ const reducer = (state, action) => {
 export default function ProductListScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
+  const navigate = useNavigate()
 
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -49,6 +52,24 @@ export default function ProductListScreen() {
     }
   }, [userInfo]);
 
+  
+  const productDelete = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/products/${id}`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` }
+      });
+
+      if (!response.data) {
+        throw new Error('Failed to delete order');
+      } else {
+        toast('Order deleted successfully');
+        fetchData(); 
+      }
+    } catch (error) {
+      toast('Failed to delete order.');
+    }
+  };
+
   return (
     <div className="container mx-auto">
       <Helmet>
@@ -71,6 +92,7 @@ export default function ProductListScreen() {
                 <th className="px-4 py-2">Price</th>
                 <th className="px-4 py-2">Category</th>
                 <th className="px-4 py-2">Action</th>
+                <th className="px-4 py-2">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -87,6 +109,14 @@ export default function ProductListScreen() {
                       onClick={() => navigate(`/product/${product.slug}`)}
                     >
                       Go To
+                    </button>
+                  </td>
+                  <td className="px-4 py-2">
+                  <button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => productDelete(product._id)}
+                    >
+                      Delete
                     </button>
                   </td>
                 </tr>

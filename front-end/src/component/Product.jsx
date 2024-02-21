@@ -40,11 +40,11 @@ function Product(props) {
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <p className="text-gray-700 font-semibold mt-2">${product.price}</p>
         {product.countInStock === 0 ? (
-          <button className="mt-4 bg-red-500 text-white py-2 px-4 rounded cursor-not-allowed" disabled>
+          <button className=" bg-red-500 text-white py-2 px-4 rounded cursor-not-allowed" disabled>
             Out of stock
           </button>
         ) : (
-          <button className="mt-4 bg-gray-800 hover:bg-slate-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out" onClick={addToCartHandler}>
+          <button className=" bg-gray-800 hover:bg-slate-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out" onClick={addToCartHandler}>
             Add to cart
           </button>
         )}

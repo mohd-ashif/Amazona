@@ -30,41 +30,37 @@ productRouter.get('/slug/:slug', async (req, res) => {
 });
 
 
-productRouter.get('/:id', async (req, res) => {
-  const product = await Product.findById(req.params.id);
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: 'Product Not Found' });
-  }
-});
-
 productRouter.get(
-  '/search  ',
-  expressAsyncHandler(async (req, res) => {
-    const { query } = req;
-    const searchQuery = query.query || '';
+  '/search',
+  expressAsyncHandler (async (req, res) => {
+    const { query } = req.query;
+    const searchQuery = query || '';
 
-    if (!searchQuery) {
-      return res.status(400).send({ message: 'Please provide a search query.' });
+    let queryFilter = {};
+
+    if (searchQuery && searchQuery !== 'all') {
+      queryFilter = {
+        name: {
+          $regex: searchQuery,
+          $options: 'i',
+        },
+      };
     }
 
-    const queryFilter = {
-      name: {
-        $regex: searchQuery,
-        $options: 'i',
-      },
-    };
+    try {
+      const products = await Product.find({ ...queryFilter });
+      const countProducts = await Product.countDocuments({ ...queryFilter });
 
-    const products = await Product.find(queryFilter);
-
-    const countProducts = await Product.countDocuments(queryFilter);
-    res.send({
-      products,
-      countProducts,
-    });
+      res.send({
+        products,
+        countProducts,
+      });
+    } catch (error) {
+      res.status(500).send({ message: 'Internal server error' });
+    }
   })
 );
+
 
 // Admin products
 productRouter.get(
@@ -72,8 +68,7 @@ productRouter.get(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-   
-
+  
     const products = await Product.find()
     
     res.send(products);
@@ -116,5 +111,29 @@ productRouter.post(
     }
   })
 );
+
+productRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+  try {
+    const id = req.params.id;
+    const product = await Product.findByIdAndDelete(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "product not found" });
+    }
+
+    res.status(200).json({ message: "product deleted successfully", product });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}));
+
+// productRouter.post('/craete' , isAdmin , isAuth , expressAsyncHandler (async (req, res)=> {
+//   try {
+//     const {name , }
+//   } catch (error) {
+    
+//   }
+// }))
 
 export default productRouter

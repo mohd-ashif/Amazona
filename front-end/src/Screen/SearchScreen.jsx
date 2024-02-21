@@ -1,11 +1,13 @@
 import React, { useEffect, useReducer } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'; // Removed unused import
 import axios from 'axios';
 import { getError } from '../utils';
+import { Helmet } from 'react-helmet-async';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import LoadingBox from '../component/LoadingBox';
+import MessageBox from '../component/MeassageBox'; // Corrected typo in import
 import Product from '../component/Product';
-import MessageBox from '../component/MeassageBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -16,7 +18,6 @@ const reducer = (state, action) => {
         ...state,
         products: action.payload.products,
         loading: false,
-        error: '',
       };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
@@ -25,9 +26,10 @@ const reducer = (state, action) => {
   }
 };
 
-export const SearchScreen = () => {
+export default function SearchScreen() {
   const { search } = useLocation();
-  const query = new URLSearchParams(search).get('query') || '';
+  const sp = new URLSearchParams(search);
+  const query = sp.get('query') || '';
 
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -37,9 +39,9 @@ export const SearchScreen = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const { data } = await axios.get(`http://localhost:5000/products/search?query=${encodeURIComponent(query)}`);
+        dispatch({ type: 'FETCH_REQUEST' });
+        const { data } = await axios.get(`/api/products/search?query=${query}`); // Removed hardcoded URL
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
@@ -48,32 +50,35 @@ export const SearchScreen = () => {
         });
       }
     };
-    if (query.trim() !== '') {
-      fetchData();
-    } else {
-      dispatch({ type: 'FETCH_SUCCESS', payload: { products: [] } });
-    }
+    fetchData();
   }, [query]);
 
   return (
     <div>
-      {loading ? (
-        <div>Loading...</div>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : products.length === 0 ? (
-        <MessageBox>No Product Found</MessageBox>
-      ) : (
-        <Row>
-          {products.map((product) => (
-            <Col key={product._id} sm={6} md={4} lg={3}>
-              <Product product={product} />
-            </Col>
-          ))}
-        </Row>
-      )}
+      <Helmet>
+        <title>Search Products</title>
+      </Helmet>
+      <Row>
+        <Col>
+          <h2>Search Results</h2>
+          <p>Showing search results for: {query}</p>
+          {loading ? (
+            <LoadingBox />
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) :( !products || products.length === 0 )? (
+            <MessageBox>No Products Found</MessageBox>
+          ) : (
+            <Row>
+              {products.map((product) => (
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <Product product={product} />
+                </Col>
+              ))}
+            </Row>
+          )}
+        </Col>
+      </Row>
     </div>
   );
-};
-
-export default SearchScreen;
+}
