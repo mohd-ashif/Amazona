@@ -19,8 +19,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname));
   },
-});
-             
+});        
 
 productRouter.get('/', async (req, res) => {
   const products = await Product.find();
@@ -37,6 +36,15 @@ productRouter.get(
 
 productRouter.get('/slug/:slug', async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });
+  if (product) {
+    res.send(product);
+  } else {
+    res.status(404).send({ message: 'Product Not Found' });
+  }
+});
+
+productRouter.get('/:id', async (req, res) => {
+  const product = await Product.findById(req.params.id);
   if (product) {
     res.send(product);
   } else {
@@ -141,6 +149,20 @@ productRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, re
   }
 }));
 
+productRouter.post('/create', upload.single('image'), expressAsyncHandler(async (req, res) => {
+  try {
+    const { name, slug, brand, category, description, price, countInStock, rating, numReviews } = req.body;
+    const imagePath = req.file.filename;
 
+    
+    const product = await Product.create({ name, slug, brand, category, description, price, countInStock, rating, numReviews, image: imagePath });
+    
+    res.status(201).json(product); 
+   } catch (error) {
+      console.error(error); // Log the error for debugging
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+    
+}));
 
 export default productRouter
