@@ -3,9 +3,9 @@ import Product from '../model/productModel.js';
 import expressAsyncHandler from 'express-async-handler';
 import { isAdmin, isAuth } from '../utils.js';
 import multer from 'multer';
+import path from 'path'; 
 
-const app = express();
-const upload = multer({ dest: 'uploads/' });  
+const app = express();  
 const productRouter = express.Router(); 
 
 productRouter.use('/uploads', express.static('uploads'));
@@ -16,10 +16,18 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './uploads');
   },
-  filename: (req, file, cb) => {
+  filename: (req, file, cb) => { 
     cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname));
   },
-});        
+});
+             
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 6, // 6 MB limit
+  },
+});
+    
 
 productRouter.get('/', async (req, res) => {
   const products = await Product.find();
@@ -43,6 +51,7 @@ productRouter.get('/slug/:slug', async (req, res) => {
   }
 });
 
+//get product:id
 productRouter.get('/:id', async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (product) {
@@ -52,36 +61,21 @@ productRouter.get('/:id', async (req, res) => {
   }
 });
 
-productRouter.get(
-  '/search',
-  expressAsyncHandler (async (req, res) => {
-    const { query } = req.query;
-    const searchQuery = query || '';
 
-    let queryFilter = {};
 
-    if (searchQuery && searchQuery !== 'all') {
-      queryFilter = {
-        name: {
-          $regex: searchQuery,
-          $options: 'i',
-        },
-      };
-    }
+productRouter.get("/", async (req, res) => {
+  try {
+    const search = req.query.search || "";
 
-    try {
-      const products = await Product.find({ ...queryFilter });
-      const countProducts = await Product.countDocuments({ ...queryFilter });
+    const product = await Product.find({ name: { $regex: search, $options: "i" } });
 
-      res.send({
-        products,
-        countProducts,
-      });
-    } catch (error) {
-      res.status(500).send({ message: 'Internal server error' });
-    }
-  })
-);
+    res.status(200).json({ product });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: true, message: "Internal Server Error" });
+  }
+});
+
 
 // Admin products
 productRouter.get(
@@ -149,20 +143,41 @@ productRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, re
   }
 }));
 
-productRouter.post('/create', upload.single('image'), expressAsyncHandler(async (req, res) => {
-  try {
-    const { name, slug, brand, category, description, price, countInStock, rating, numReviews } = req.body;
-    const imagePath = req.file.filename;
 
-    
-    const product = await Product.create({ name, slug, brand, category, description, price, countInStock, rating, numReviews, image: imagePath });
-    
-    res.status(201).json(product); 
-   } catch (error) {
-      console.error(error); // Log the error for debugging
-      res.status(500).json({ message: 'Internal Server Error' });
+productRouter.post(
+  '/create',
+  upload.single('image'),
+  expressAsyncHandler(async (req, res) => {
+    try {
+     
+      if (!req.file) {
+        throw new Error('No file uploaded');
+      }
+      const imagePath = req.file ? req.file.filename : null;
+
+      const newProduct = new Product({
+        name: req.body.name,
+        slug: req.body.slug,
+        image: imagePath, 
+        price: req.body.price,
+        category: req.body.category,
+        brand: req.body.brand,
+        countInStock: req.body.countInStock,
+        rating: req.body.rating,
+        numReviews: req.body.numReviews,
+        description: req.body.description,
+      });
+
+      const product = await newProduct.save();
+      res.status(201).send({ message: 'Product Created', product });
+    } catch (error) {
+      console.error('Error creating product:', error);
+      res.status(400).send({ message: error.message || 'Invalid request' }); 
     }
-    
-}));
+  })
+);
+
+
+
 
 export default productRouter

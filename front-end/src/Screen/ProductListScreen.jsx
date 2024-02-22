@@ -62,8 +62,10 @@ export default function ProductListScreen() {
       if (!response.data) {
         throw new Error('Failed to delete order');
       } else {
-        toast('Order deleted successfully');
-        fetchData(); 
+        toast.success('Order deleted successfully');
+        
+        window.location.reload();
+
       }
     } catch (error) {
       toast('Failed to delete order.');

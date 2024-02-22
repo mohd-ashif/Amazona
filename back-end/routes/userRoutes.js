@@ -32,6 +32,7 @@ userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password),
       });
+      
       const user = await newUser.save();
       res.send({
         _id: user._id,

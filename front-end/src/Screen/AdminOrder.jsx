@@ -82,6 +82,7 @@ export default function Admin() {
       } else {
         toast('Order deleted successfully');
         fetchData(); 
+      
       }
     } catch (error) {
       toast('Failed to delete order.');

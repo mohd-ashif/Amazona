@@ -2,13 +2,11 @@ import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Store } from '../Store';
+import { Helmet } from 'react-helmet-async';
 
 const AddProductForm = () => {
-
-  const { state} = useContext(Store);
-  const { userInfo } = state; 
-
-
+  const { state } = useContext(Store);
+  const { userInfo } = state;
 
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
@@ -20,6 +18,7 @@ const AddProductForm = () => {
   const [rating, setRating] = useState('');
   const [numReviews, setNumReviews] = useState('');
   const [image, setImage] = useState(null);
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,23 +30,29 @@ const AddProductForm = () => {
     formData.append('category', category);
     formData.append('description', description);
     formData.append('price', price);
-    formData.append('countInStock', countInStock); // Corrected typo here
+    formData.append('countInStock', countInStock);
     formData.append('rating', rating);
-    formData.append('numReviews', numReviews); // Corrected typo here
+    formData.append('numReviews', numReviews);
     formData.append('image', image);
-
-
 
     try {
       const response = await axios.post("http://localhost:5000/products/create", formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+       
       });
-      toast.success('Created successfully');
+      console.log(response.data)  
+      toast.success('Product created successfully');
+     console.log(response.image)
     } catch (error) {
+      toast.error('Error creating product');
       console.error('Error:', error);
     }
+  };
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
 
 
@@ -55,6 +60,9 @@ const AddProductForm = () => {
     
     <form onSubmit={handleSubmit} className="max-w-screen-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 grid grid-cols-2 gap-4">
     <div className="mb-4">
+    <Helmet>
+        <title>Add Product</title>
+      </Helmet>
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
         Name
       </label>
@@ -157,7 +165,7 @@ const AddProductForm = () => {
         onChange={(e) => setRating(e.target.value)}
       />
     </div>
-    <div className="mb-4">
+    <div className="mb-4 col-span-1">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="numReviews">
         Number of Reviews
       </label>
@@ -171,20 +179,20 @@ const AddProductForm = () => {
       />
     </div>
     <div className="mb-4">
-      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">
-        Image
-      </label>
-      <input
-        className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-        id="image"
-        type="file"
-        name="image"
-        onChange={(e) => setImage(e.target.value)}
-      />
-    </div>
+  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">
+    Image
+  </label>
+  <input
+    className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+    id="image"
+    type="file"
+    onChange={handleImageChange} 
+    name="image"
+  />
+</div>
     <div className="mb-2 ">
       <button
-        className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        className=" bg-blue-500  hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         type="submit"
       >
         Add Product
@@ -196,3 +204,4 @@ const AddProductForm = () => {
 };
 
 export default AddProductForm;
+

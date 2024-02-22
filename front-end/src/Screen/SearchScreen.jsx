@@ -1,12 +1,12 @@
 import React, { useEffect, useReducer } from 'react';
-import { useLocation } from 'react-router-dom'; // Removed unused import
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { getError } from '../utils';
 import { Helmet } from 'react-helmet-async';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import LoadingBox from '../component/LoadingBox';
-import MessageBox from '../component/MeassageBox'; // Corrected typo in import
+import MessageBox from '../component/MeassageBox';
 import Product from '../component/Product';
 
 const reducer = (state, action) => {
@@ -41,7 +41,7 @@ export default function SearchScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/products/search?query=${query}`); // Removed hardcoded URL
+        const { data } = await axios.get(`/api/products/search?query=${query}`);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
@@ -66,7 +66,7 @@ export default function SearchScreen() {
             <LoadingBox />
           ) : error ? (
             <MessageBox variant="danger">{error}</MessageBox>
-          ) :( !products || products.length === 0 )? (
+          ) : !products || products.length === 0 ? (
             <MessageBox>No Products Found</MessageBox>
           ) : (
             <Row>
