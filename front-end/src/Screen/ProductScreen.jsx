@@ -187,8 +187,10 @@ function ProductScreen() {
       {product.reviews && product.reviews.map((review) => (
         <li key={review._id} className="border border-gray-200 p-4 rounded-md">
           <div className="font-bold mb-2">{review.name}</div>
+          <hr />
           <Rating rating={review.rating} caption=" " />
           <p className="text-gray-500">{review.createdAt.substring(0, 10)}</p>
+          <hr />
           <p>{review.comment}</p>
         </li>
       ))}
@@ -200,6 +202,7 @@ function ProductScreen() {
         <h2>Write a customer review</h2>
         <div>
           <label htmlFor="rating" className="block">Rating</label>
+        
           <select
             id="rating"
             className="block w-full border border-gray-300 rounded-md p-2"
@@ -223,6 +226,7 @@ function ProductScreen() {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           ></textarea>
+          
         </div>
         <div>
           <button disabled={loadingCreateReview} type="submit" className="bg-slate-800 hover:bg-slate-600 text-white py-2 px-4 rounded-md">

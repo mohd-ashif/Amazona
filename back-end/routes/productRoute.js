@@ -2,10 +2,25 @@ import express from 'express';
 import Product from '../model/productModel.js';
 import expressAsyncHandler from 'express-async-handler';
 import { isAdmin, isAuth } from '../utils.js';
+import multer from 'multer';
 
 const app = express();
+const upload = multer({ dest: 'uploads/' });  
+const productRouter = express.Router(); 
 
-const productRouter = express.Router();
+productRouter.use('/uploads', express.static('uploads'));
+
+
+// Image upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname));
+  },
+});
+             
 
 productRouter.get('/', async (req, res) => {
   const products = await Product.find();
@@ -28,7 +43,6 @@ productRouter.get('/slug/:slug', async (req, res) => {
     res.status(404).send({ message: 'Product Not Found' });
   }
 });
-
 
 productRouter.get(
   '/search',
@@ -60,7 +74,6 @@ productRouter.get(
     }
   })
 );
-
 
 // Admin products
 productRouter.get(
@@ -128,12 +141,6 @@ productRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, re
   }
 }));
 
-// productRouter.post('/craete' , isAdmin , isAuth , expressAsyncHandler (async (req, res)=> {
-//   try {
-//     const {name , }
-//   } catch (error) {
-    
-//   }
-// }))
+
 
 export default productRouter
