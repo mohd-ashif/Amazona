@@ -186,7 +186,7 @@ productRouter.put(
       product.name = req.body.name;
       product.slug = req.body.slug;
       product.price = req.body.price;
-      product.image = req.body.image;
+      product.image = req.file.filename;
       product.images = req.body.images;
       product.category = req.body.category;
       product.brand = req.body.brand;
