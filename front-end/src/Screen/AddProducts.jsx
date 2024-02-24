@@ -59,7 +59,7 @@ const AddProductForm = () => {
   return (
     
     <form onSubmit={handleSubmit} className="max-w-screen-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 grid grid-cols-2 gap-4">
-    <div className="mb-4">
+    <div className="mb-4 ">
     <Helmet>
         <title>Add Product</title>
       </Helmet>
@@ -152,7 +152,7 @@ const AddProductForm = () => {
         onChange={(e) => setCountInStock(e.target.value)}
       />
     </div>
-    <div className="mb-4">
+    <div className="mb-4 ">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="rating">
         Rating
       </label>
@@ -165,7 +165,7 @@ const AddProductForm = () => {
         onChange={(e) => setRating(e.target.value)}
       />
     </div>
-    <div className="mb-4 col-span-1">
+    <div className="mb-4 ">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="numReviews">
         Number of Reviews
       </label>

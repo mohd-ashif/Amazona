@@ -75,7 +75,7 @@ const data = {
     {
       // _id: '5',
       name: 'Nike Running Shoes',
-      slug: 'nike-nike-t-shirt',
+      slug: 'nike-nike-t-shoes',
       category: 'Shoes',
       image: '/images/p5.jpg',
       price: 150,

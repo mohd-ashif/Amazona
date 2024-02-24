@@ -34,6 +34,7 @@ productRouter.get('/', async (req, res) => {
   res.send(products);
 });
 
+
 productRouter.get(
   '/categories',
   expressAsyncHandler(async (req, res) => {
@@ -62,8 +63,7 @@ productRouter.get('/:id', async (req, res) => {
 });
 
 
-
-productRouter.get("/", async (req, res) => {
+productRouter.get("/search", async (req, res) => {
   try {
     const search = req.query.search || "";
 
@@ -75,7 +75,6 @@ productRouter.get("/", async (req, res) => {
     res.status(500).json({ error: true, message: "Internal Server Error" });
   }
 });
-
 
 // Admin products
 productRouter.get(
@@ -177,7 +176,37 @@ productRouter.post(
   })
 );
 
+productRouter.put('/update' , isAdmin , isAuth , expressAsyncHandler  (async (req, res)=> {
+  try {
+   const id = req.params.id ;
 
+   const updateData  = {
+
+    name: req.body.name,
+    slug: req.body.slug,
+    image: req.file.filename , 
+    price: req.body.price,
+    category: req.body.category,
+    brand: req.body.brand,
+    countInStock: req.body.countInStock,
+    rating: req.body.rating,
+    numReviews: req.body.numReviews,
+    description: req.body.description,
+
+   }
+   
+  const updatedProduct = await Product.findByIdAndUpdate( id , updateData  , {new:true})
+
+  if (!updatedProduct){
+    res.status(404).send({message:"product is not update"})
+  }
+  res.status(200).send({message :"product update succesfully "}, updatedProduct) 
+
+  } catch (error) {
+    console.log(error)
+     
+  }
+}))
 
 
 export default productRouter

@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   return (
-    <div className="container mt-8 mx-auto">
+    <div className="container mt-9 mx-auto">
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      <h1 className="text-4xl font-bold mb-10 text-center">Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <h1 className="text-4xl font-bold mb-12 text-center">Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div className="col-span-1">
           <div className="bg-white shadow-md rounded-lg p-6 hover:drop-shadow-lg transition duration-200">
             <h2 className="text-2xl font-bold mb-4">Add Product</h2>

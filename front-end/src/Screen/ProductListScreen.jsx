@@ -63,7 +63,6 @@ export default function ProductListScreen() {
         throw new Error('Failed to delete order');
       } else {
         toast.success('Order deleted successfully');
-        
         window.location.reload();
 
       }

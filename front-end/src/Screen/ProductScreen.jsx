@@ -36,7 +36,6 @@ function ProductScreen() {
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
-  const [selectedImage, setSelectedImage] = useState('');
 
   const navigate = useNavigate();
   const params = useParams();
@@ -121,7 +120,7 @@ function ProductScreen() {
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="md:col-span-1">
-          <img className="w-full" src={product.image} alt={product.name} />
+          <img className="w-full" src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${product.image}`} />
         </div>
         <div className="md:col-span-1">
           <div className="mb-4">
@@ -143,7 +142,7 @@ function ProductScreen() {
                     type="button"
                     onClick={() => setSelectedImage(x)}
                   >
-                    <img className="w-full" src={x} alt="product" />
+                    <img className="w-full" src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${product.image}`} alt="product" />
                   </button>
                 </div>
               ))}
