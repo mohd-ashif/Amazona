@@ -175,38 +175,41 @@ productRouter.post(
     }
   })
 );
+productRouter.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if (product) {
+      product.name = req.body.name;
+      product.slug = req.body.slug;
+      product.price = req.body.price;
+      product.image = req.body.image;
+      product.images = req.body.images;
+      product.category = req.body.category;
+      product.brand = req.body.brand;
+      product.countInStock = req.body.countInStock;
+      product.description = req.body.description;
+      await product.save();
+      res.send({ message: 'Product Updated' });
+    } else {
+      res.status(404).send({ message: 'Product Not Found' });
+    }
+  })
+);
 
-productRouter.put('/update' , isAdmin , isAuth , expressAsyncHandler  (async (req, res)=> {
-  try {
-   const id = req.params.id ;
 
-   const updateData  = {
-
-    name: req.body.name,
-    slug: req.body.slug,
-    image: req.file.filename , 
-    price: req.body.price,
-    category: req.body.category,
-    brand: req.body.brand,
-    countInStock: req.body.countInStock,
-    rating: req.body.rating,
-    numReviews: req.body.numReviews,
-    description: req.body.description,
-
-   }
-   
-  const updatedProduct = await Product.findByIdAndUpdate( id , updateData  , {new:true})
-
-  if (!updatedProduct){
-    res.status(404).send({message:"product is not update"})
+productRouter.get('/:id', async (req, res) => {
+  const product = await Product.findById(req.params.id);
+  if (product) {
+    res.send(product);
+  } else {
+    res.status(404).send({ message: 'Product Not Found' });
   }
-  res.status(200).send({message :"product update succesfully "}, updatedProduct) 
+});
 
-  } catch (error) {
-    console.log(error)
-     
-  }
-}))
 
 
 export default productRouter

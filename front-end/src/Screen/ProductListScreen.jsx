@@ -4,9 +4,10 @@ import LoadingBox from '../component/LoadingBox';
 import MessageBox from '../component/MeassageBox';
 import { Store } from '../Store';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
+import { FaEdit, FaTrash } from 'react-icons/fa'; // Import Font Awesome icons
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -88,19 +89,18 @@ export default function ProductListScreen() {
             <thead>
               <tr className="bg-gray-100">
                 <th className="px-4 py-2">Name</th>
-                <th className="px-4 py-2">Slug</th>
                 <th className="px-4 py-2">Brand</th>
                 <th className="px-4 py-2">Price</th>
                 <th className="px-4 py-2">Category</th>
                 <th className="px-4 py-2">Action</th>
-                <th className="px-4 py-2">Action</th>
+                <th className="px-4 py-2">Edit</th>
+                <th className="px-4 py-2">Delete</th>
               </tr>
             </thead>
             <tbody>
               {products.map((product) => (
                 <tr key={product._id} className="border-b border-gray-300">
                   <td className="px-4 py-2">{product.name}</td>
-                  <td className="px-4 py-2">{product.slug}</td>
                   <td className="px-4 py-2">{product.brand}</td>
                   <td className="px-4 py-2">${product.price}</td>
                   <td className="px-4 py-2">{product.category}</td>
@@ -112,12 +112,22 @@ export default function ProductListScreen() {
                       Go To
                     </button>
                   </td>
+
                   <td className="px-4 py-2">
-                  <button
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  <Link to={`/admin/edit/${product._id}`}> <button
+                      className="bg-amber-500 hover:bg-amber-200 text-white font-bold py-2 px-4 rounded"
+                    
+                    >
+                      <FaEdit />
+                    </button>
+                    </Link> 
+                  </td>
+                  <td className="px-4 py-2">
+                    <button
+                      className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
                       onClick={() => productDelete(product._id)}
                     >
-                      Delete
+                      <FaTrash /> 
                     </button>
                   </td>
                 </tr>
