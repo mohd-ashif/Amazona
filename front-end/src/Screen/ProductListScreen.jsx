@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
-import { FaEdit, FaTrash } from 'react-icons/fa'; // Import Font Awesome icons
+import { FaEdit, FaEye, FaTrash } from 'react-icons/fa'; 
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -92,7 +92,7 @@ export default function ProductListScreen() {
                 <th className="px-4 py-2">Brand</th>
                 <th className="px-4 py-2">Price</th>
                 <th className="px-4 py-2">Category</th>
-                <th className="px-4 py-2">Action</th>
+                <th className="px-4 py-2">view</th>
                 <th className="px-4 py-2">Edit</th>
                 <th className="px-4 py-2">Delete</th>
               </tr>
@@ -109,7 +109,7 @@ export default function ProductListScreen() {
                       className="bg-blue-950 hover:bg-slate-400 text-white font-bold py-2 px-4 rounded"
                       onClick={() => navigate(`/product/${product.slug}`)}
                     >
-                      Go To
+                     <FaEye />
                     </button>
                   </td>
 

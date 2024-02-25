@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Store } from '../Store';
 import { getError } from '../utils';
 import Container from 'react-bootstrap/Container';
+import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../component/LoadingBox';
@@ -35,11 +36,11 @@ const reducer = (state, action) => {
       };
     case 'UPLOAD_FAIL':
       return { ...state, loadingUpload: false, errorUpload: action.payload };
+
     default:
       return state;
   }
 };
-
 export default function EditScreen() {
   const navigate = useNavigate();
   const params = useParams();
@@ -47,18 +48,12 @@ export default function EditScreen() {
 
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: '',
-    });
+  const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] = useReducer(reducer, { loading: true, error: '', });
 
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
-  const [additionalImage, setAdditionalImage] = useState('');
-  const [images, setImages] = useState([]);
   const [category, setCategory] = useState('');
   const [countInStock, setCountInStock] = useState('');
   const [brand, setBrand] = useState('');
@@ -73,7 +68,6 @@ export default function EditScreen() {
         setSlug(data.slug);
         setPrice(data.price);
         setImage(data.image);
-        setImages(data.images);
         setCategory(data.category);
         setCountInStock(data.countInStock);
         setBrand(data.brand);
@@ -101,7 +95,6 @@ export default function EditScreen() {
           slug,
           price,
           image,
-          images,
           category,
           brand,
           countInStock,
@@ -122,6 +115,10 @@ export default function EditScreen() {
     }
   };
 
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+  
   return (
     <Container className="small-container">
       <Helmet>
@@ -162,15 +159,16 @@ export default function EditScreen() {
               className="w-full"
             />
           </Form.Group>
-          <Form.Group controlId="additionalImageFile" className="mb-3">
-            <Form.Label>Upload Additional Image</Form.Label>
+          <Form.Group className="mb-3" controlId="additionalImageFile">
+            <Form.Label>Upload Image</Form.Label>
             <Form.Control
               type="file"
-              onChange={handleAdditionalImageChange}
+              onChange={handleImageChange}
             />
-            <Button onClick={uploadAdditionalImageHandler} className="mt-2">Upload</Button>
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
+
+
           <Form.Group controlId="category" className="mb-3">
             <Form.Label>Category</Form.Label>
             <Form.Control
@@ -208,12 +206,13 @@ export default function EditScreen() {
             />
           </Form.Group>
           <div className="col-span-2 mb-3">
-            <Button disabled={loadingUpdate} type="submit" className="w-24">
+            <Button disabled={loadingUpdate} type="submit" className="w-24 ">
               Update
             </Button>
             {loadingUpdate && <LoadingBox></LoadingBox>}
           </div>
         </Form>
+
       )}
     </Container>
   );

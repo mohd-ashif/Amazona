@@ -175,27 +175,35 @@ productRouter.post(
     }
   })
 );
-productRouter.put(
-  '/:id',
-  isAuth,
-  isAdmin,
+productRouter.post(
+  '/create',
+  upload.single('image'),
   expressAsyncHandler(async (req, res) => {
-    const productId = req.params.id;
-    const product = await Product.findById(productId);
-    if (product) {
-      product.name = req.body.name;
-      product.slug = req.body.slug;
-      product.price = req.body.price;
-      product.image = req.file.filename;
-      product.images = req.body.images;
-      product.category = req.body.category;
-      product.brand = req.body.brand;
-      product.countInStock = req.body.countInStock;
-      product.description = req.body.description;
-      await product.save();
-      res.send({ message: 'Product Updated' });
-    } else {
-      res.status(404).send({ message: 'Product Not Found' });
+    try {
+      if (!req.file) {
+        throw new Error('No file uploaded');
+      }
+      
+      const imagePath = req.file ? req.file.filename : null;
+
+      const newProduct = new Product({
+        name: req.body.name,
+        slug: req.body.slug,
+        image: imagePath, // Include the image field
+        price: req.body.price,
+        category: req.body.category,
+        brand: req.body.brand,
+        countInStock: req.body.countInStock,
+        rating: req.body.rating,
+        numReviews: req.body.numReviews,
+        description: req.body.description,
+      });
+
+      const product = await newProduct.save();
+      res.status(201).send({ message: 'Product Created', product });
+    } catch (error) {
+      console.error('Error creating product:', error);
+      res.status(400).send({ message: error.message || 'Invalid request' }); 
     }
   })
 );

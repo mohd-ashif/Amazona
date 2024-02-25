@@ -4,6 +4,8 @@ import Order from '../model/orderModel.js';
 import { isAuth , isAdmin} from '../utils.js';
 
 const orderRouter = express.Router();
+
+// Create a new order
 orderRouter.post(
   '/',
   isAuth,
@@ -24,6 +26,7 @@ orderRouter.post(
   })
 );
 
+//  Fetch orders for the current user
 orderRouter.get(
   '/mine',
   isAuth,
@@ -39,7 +42,7 @@ orderRouter.get(
   })
 );
 
-
+// Fetch a specific order by ID
 orderRouter.get(
     '/:id',
     isAuth,
@@ -53,7 +56,7 @@ orderRouter.get(
     })
   );
   
-  
+  // Mark an order as paid
   orderRouter.put(
     '/:id/pay',
     isAuth,
@@ -77,6 +80,7 @@ orderRouter.get(
     })
   );
 
+  // Fetch all orders (Admin only)
   orderRouter.get('/', isAdmin, expressAsyncHandler(async (req, res) => {
     try {
       const orders = await Order.find({});
@@ -87,6 +91,7 @@ orderRouter.get(
     }
   }));
   
+  // PUT: Accept an order (Admin only)
   orderRouter.put('/:id/accept', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
     try {
       const id = req.params.id;
@@ -107,6 +112,7 @@ orderRouter.get(
     }
   }));
   
+  // Delete an order (Admin only)
   orderRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
     try {
       const id = req.params.id;

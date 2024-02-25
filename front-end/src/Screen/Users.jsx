@@ -5,6 +5,8 @@ import MessageBox from '../component/MeassageBox';
 import { Store } from '../Store';
 import axios from 'axios';
 import { getError } from '../utils';
+import { FaTrash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -18,6 +20,8 @@ const reducer = (state, action) => {
       return state;
   }
 };
+
+
 
 export default function ProductListScreen() {
   const { state } = useContext(Store);
@@ -49,6 +53,25 @@ export default function ProductListScreen() {
     }
   }, [userInfo]);
 
+  const deleteUSer = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/users/${id}`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` }
+      });
+
+      if (!response.data) {
+        throw new Error('Failed to delete user');
+      } else {
+        toast.success('user deleted successfully');
+        window.location.reload(); 
+
+      }
+    } catch (error) {
+      toast('Failed to delete user.');
+    }
+  };
+
+
   return (
     <div className="container-fluid">
       <Helmet>
@@ -68,6 +91,7 @@ export default function ProductListScreen() {
                   <th>Name</th>
                   <th>Email</th>
                   <th>IsAdmin</th>
+                  <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -77,7 +101,7 @@ export default function ProductListScreen() {
                     <td>{user.email}</td>
                     <td>{user.isAdmin ? 'Yes' : 'No'}</td>
                     <td>
-                      <button type='button' className='btn btn-danger' >delete</button>
+                      <button type='button' className='btn btn-danger'   onClick={() => deleteUSer(user._id)} >   <FaTrash /> </button>
                     </td>
                   </tr>
                 ))}
