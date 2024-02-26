@@ -65,7 +65,7 @@ function ProductScreen() {
   const addToCartHandler = async () => {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    
+
     const { data } = await axios.get(`http://localhost:5000/products/${product._id}`);
     if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock');
@@ -83,7 +83,7 @@ function ProductScreen() {
     if (!comment || !rating) {
       toast.error('Please enter comment and rating');
       return;
-    }
+    } 
     try {
       const { data } = await axios.post(
         `http://localhost:5000/products/${product._id}/reviews`,
@@ -105,6 +105,7 @@ function ProductScreen() {
         behavior: 'smooth',
         top: reviewsRef.current.offsetTop,
       });
+
     } catch (error) {
       toast.error(getError(error));
       dispatch({ type: 'CREATE_FAIL' });
@@ -116,11 +117,20 @@ function ProductScreen() {
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
+     
+ 
+
     
+  
     <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4">
+   <Link to="/"><button   className="bg-slate-800 hover:bg-slate-600 text-white py-2 px-4 rounded-md mb-4">
+      Back
+    </button> </Link> 
+    </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="md:col-span-1">
-          <img className="w-full" src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${product.image}`} />
+          <img className="w-full rounded-md" src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${product.image}`} />
         </div>
         <div className="md:col-span-1">
           <div className="mb-4">
@@ -132,22 +142,16 @@ function ProductScreen() {
           <div className="mb-4">
             <Rating rating={product.rating} numReviews={product.numReviews} />
           </div>
+          <hr />
           <div className="mb-4">Price: ${product.price}</div>
+          <hr />
           <div className="mb-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[product.image, ...(Array.isArray(product.images) ? product.images : [])].map((x) => (
-                <div key={x}>
-                  <button
-                    className="w-full border border-gray-300 rounded-md p-2 text-center"
-                    type="button"
-                    onClick={() => setSelectedImage(x)}
-                  >
-                    <img className="w-full" src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${product.image}`} alt="product" />
-                  </button>
-                </div>
-              ))}
-            </div>
+            <div className="mb-4"> Brand :{product.brand}</div>
+            <hr />
+
+            <div className="mb-4"> Category :{product.category}</div>
           </div>
+          <hr />
           <div className="mb-4">Description: <p>{product.description}</p></div>
         </div>
         <div>
@@ -156,7 +160,9 @@ function ProductScreen() {
               <div>Price:</div>
               <div>${product.price}</div>
             </div>
+
           </div>
+          <hr />
           <div className="mb-4">
             <div className="flex justify-between">
               <div>Status:</div>
@@ -164,90 +170,90 @@ function ProductScreen() {
             </div>
           </div>
           {product.countInStock > 0 ? (
-  <div className="mb-4">
-    <button onClick={addToCartHandler} className="w-full bg-slate-800 hover:bg-slate-600 text-white rounded-md py-2">
-      Add to Cart
-    </button>
-  </div>
-) : (
-  <div className="mb-4">
-    <button className="w-full bg-red-400 400 text-white rounded-md py-2 cursor-not-allowed" disabled>
-      Out of Stock
-    </button>
-  </div>
-)}
+            <div className="mb-4">
+              <button onClick={addToCartHandler} className="w-full bg-slate-800 hover:bg-slate-600 text-white rounded-md py-2">
+                Add to Cart
+              </button>
+            </div>
+          ) : (
+            <div className="mb-4">
+              <button className="w-full bg-red-400 400 text-white rounded-md py-2 cursor-not-allowed" disabled>
+                Out of Stock
+              </button>
+            </div>
+          )}
 
         </div>
       </div>
       <div className="my-4">
-  <h2 ref={reviewsRef}>Reviews</h2>
-  {product.reviews && product.reviews.length === 0 ? (
-    <MessageBox>There is no review</MessageBox>
-  ) : (
-    <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {product.reviews && product.reviews.map((review) => (
-        <li key={review._id} className="border border-gray-200 p-4 rounded-md">
-          <div className="font-bold mb-2">{review.name}</div>
-          <hr />
-          <Rating rating={review.rating} caption=" " />
-          <p className="text-gray-500">{review.createdAt.substring(0, 10)}</p>
-          <hr />
-          <p>{review.comment}</p>
-        </li>
-      ))}
-    </ul>
-  )}
-  <div className="my-4">
-    {userInfo ? (
-      <form onSubmit={submitHandler} className="space-y-4">
-        <h2>Write a customer review</h2>
-        <div>
-          <label htmlFor="rating" className="block">Rating</label>
-        
-          <select
-            id="rating"
-            className="block w-full border border-gray-300 rounded-md p-2"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
-          >
-            <option value="">Select...</option>
-            <option value="1">1- Poor</option>
-            <option value="2">2- Fair</option>
-            <option value="3">3- Good</option>
-            <option value="4">4- Very good</option>
-            <option value="5">5- Excellent</option>
-          </select>
+        <h2 ref={reviewsRef}>Reviews</h2>
+        {product.reviews && product.reviews.length === 0 ? (
+          <MessageBox>There is no review</MessageBox>
+        ) : (
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {product.reviews && product.reviews.map((review) => (
+              <li key={review._id} className="border border-gray-200 p-4 rounded-md">
+                <div className="font-bold mb-2">{review.name}</div>
+                <hr />
+                <Rating rating={review.rating} caption=" " />
+                <p className="text-gray-500">{review.createdAt.substring(0, 10)}</p>
+                <hr />
+                <p>{review.comment}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="my-4">
+          {userInfo ? (
+            <form onSubmit={submitHandler} className="space-y-4">
+              <h2>Write a customer review</h2>
+              <div>
+                <label htmlFor="rating" className="block">Rating</label>
+
+                <select
+                  id="rating"
+                  className="block w-full border border-gray-300 rounded-md p-2"
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                >
+                  <option value="">Select...</option>
+                  <option value="1">1- Poor</option>
+                  <option value="2">2- Fair</option>
+                  <option value="3">3- Good</option>
+                  <option value="4">4- Very good</option>
+                  <option value="5">5- Excellent</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="comment" className="block">Comments</label>
+                <textarea
+                  id="comment"
+                  className="block w-full border border-gray-300 rounded-md p-2"
+                  placeholder="Leave a comment here"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                ></textarea>
+
+              </div>
+              <div>
+                <button disabled={loadingCreateReview} type="submit" className="bg-slate-800 hover:bg-slate-600 text-white py-2 px-4 rounded-md">
+                  Submit
+                </button>
+                {loadingCreateReview && <LoadingBox />}
+              </div>
+            </form>
+          ) : (
+            <MessageBox>
+              Please{' '}
+              <Link to={`/signin?redirect=/product/${product.slug}`}>
+                Sign In
+              </Link>{' '}
+              to write a review
+            </MessageBox>
+          )}
         </div>
-        <div>
-          <label htmlFor="comment" className="block">Comments</label>
-          <textarea
-            id="comment"
-            className="block w-full border border-gray-300 rounded-md p-2"
-            placeholder="Leave a comment here"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          ></textarea>
-          
-        </div>
-        <div>
-          <button disabled={loadingCreateReview} type="submit" className="bg-slate-800 hover:bg-slate-600 text-white py-2 px-4 rounded-md">
-            Submit
-          </button>
-          {loadingCreateReview && <LoadingBox />}
-        </div>
-      </form>
-    ) : (
-      <MessageBox>
-        Please{' '}
-        <Link to={`/signin?redirect=/product/${product.slug}`}>
-          Sign In
-        </Link>{' '}
-        to write a review
-      </MessageBox>
-    )}
-  </div>
-</div>
-</div>
+      </div>
+    </div>
   );
 }
 

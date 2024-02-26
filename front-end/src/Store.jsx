@@ -21,7 +21,7 @@ export const initialState = {
     ? JSON.parse(localStorage.getItem('cartItems'))
     : [],
   },
-};
+}; 
 
 function reducer(state, action) {
     switch (action.type) {
@@ -75,7 +75,6 @@ function reducer(state, action) {
               cart: { ...state.cart, paymentMethod: action.payload },
             };
           
-
             default:
               return state;
               

@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../component/LoadingBox';
 import MessageBox from '../component/MeassageBox';
 
+
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -47,8 +48,11 @@ function HomeScreen() {
     <div>
       <Helmet>
         <title>E-commerce</title>
+     
       </Helmet>
-      <h1>Featured Products</h1>
+      
+      <h1>Latest Products</h1>
+   
       
       <div className="products">
         {loading ? (

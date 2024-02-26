@@ -36,9 +36,9 @@ export default function PlaceOrderScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
 
-  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; 
 
-  cart.itemsPrice = round2(
+  cart.itemsPrice = round2( 
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   );
   cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
@@ -122,9 +122,10 @@ export default function PlaceOrderScreen() {
                 {cart.cartItems.map((item) => (
                   <ListGroup.Item key={item._id}>
                     <Row className="align-items-center">
+                    
                       <Col md={6}>
                         <img
-                          src={item.image}
+                          src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${item.image}`}
                           alt={item.name}
                           className="img-fluid rounded img-thumbnail"
                           style={{ maxWidth: '100px', maxHeight: '100px' }}

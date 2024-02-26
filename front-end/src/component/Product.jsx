@@ -8,15 +8,13 @@ function Product(props) {
   const { product } = props;
 
   const { state, dispatch } = useContext(Store);
-  const {
-    cart: { cartItems },
-  } = state;
+  const {  cart: { cartItems }, } = state;
 
   const addToCartHandler = () => {
     const existItem = cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
 
-    if (product.countInStock < quantity) {
+    if (product.countInStock < quantity) {  
       toast.warning('Sorry. Product is out of stock');
       return;
     }

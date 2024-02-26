@@ -18,11 +18,11 @@ export default function CartScreen() {
       cart: { cartItems },
     } = state;
     const updateCartHandler = async (item, quantity) => {
-      const { data } = await axios.get(`/api/products/${item._id}`);
+      const { data } = await axios.get(`http://localhost:5000/products/${item._id}`);
       if (data.countInStock < quantity) {
         window.alert('Sorry. Product is out of stock');
         return;
-      }
+      } 
       ctxDispatch({
         type: 'CART_ADD_ITEM',
         payload: { ...item, quantity },
@@ -35,13 +35,13 @@ export default function CartScreen() {
     const checkoutHandler = () => {
       navigate('/signin?redirect=/shipping');
     };
-  
 
   return (
     <div>
       <Helmet>
         <title>Shopping Cart</title>
       </Helmet>
+      
       <h1>Shopping Cart</h1>
       <Row >
         <Col md={8} >
@@ -50,13 +50,13 @@ export default function CartScreen() {
               Cart is empty. <Link to="/">Go Shopping</Link>
             </MessageBox>
           ) : (
-            <ListGroup>
-              {cartItems.map((item) => (
+            <ListGroup>  
+              {cartItems.map((item) => ( 
                 <ListGroup.Item key={item._id}>
                   <Row className="align-items-center">
                     <Col md={1}>
                       <img
-                        src={item.image}
+                        src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${item.image}`}
                         alt={item.name}
                         className="img-fluid rounded img-thumbnail"
                         style={{ height: '80px' }}

@@ -152,7 +152,7 @@ function App() {
                 <Route path="/search" element={<SearchScreen />} />
                 <Route path="/signin" element={<SigninScreen />} />
                 <Route path="/signup" element={<SignupScreen />} />
-
+              
 
                 {/* Admin Routes */}
                 <Route path="/admin/dashboard" element={<AdminRoute><Dashboard />
@@ -177,9 +177,11 @@ function App() {
             </Container>
           </main>
           <footer>
-            <div className='text-center'>all rights reserved</div>
+            <div className="container mx-auto  items-center"> 
+          <p className="mt-2">© 2024 All rights reserved</p>
+          </div>
           </footer>
-        </div>
+        </div > 
       </BrowserRouter>
     </>
   );

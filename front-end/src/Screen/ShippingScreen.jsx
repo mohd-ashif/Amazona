@@ -9,11 +9,7 @@ import CheckoutSteps from '../component/checkoutPages';
 const SignupScreen = () => {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const {
-    userInfo,
-    cart:{ shippingAddress},
-
-  } = state
+  const {userInfo,cart:{ shippingAddress}, } = state 
 
   const [fullName, setFullName] = useState( shippingAddress.fullName ||'');
   const [address, setAddress] = useState(  shippingAddress.address||'');
@@ -52,7 +48,6 @@ const SignupScreen = () => {
       })
     );
 
-    
     navigate('/payment');
   };
 
