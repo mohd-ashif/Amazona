@@ -39,7 +39,7 @@ export default function EditScreen() {
   const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
-    loadingUpload: false, // Define loadingUpload in state initialization
+    loadingUpload: false, 
   });
   
   const [name, setName] = useState('');
@@ -49,7 +49,7 @@ export default function EditScreen() {
   const [brand, setBrand] = useState('');
   const [countInStock, setCountInStock] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedImage, setSelectedImage] = useState(null); // State to hold selected image file
+  const [selectedImage, setSelectedImage] = useState(null); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,7 +81,7 @@ export default function EditScreen() {
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
 
-      const formData = new FormData(); // Create FormData object
+      const formData = new FormData();
       formData.append('name', name);
       formData.append('slug', slug);
       formData.append('price', price);
@@ -89,13 +89,12 @@ export default function EditScreen() {
       formData.append('brand', brand);
       formData.append('countInStock', countInStock);
       formData.append('description', description);
-      if (selectedImage) {
-        formData.append('image', selectedImage); // Append selected image file
-      }
+      formData.append('image', selectedImage);
+      
 
       await axios.put(
         `http://localhost:5000/products/${productId}`,
-        formData, // Pass FormData object
+        formData, 
         {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -113,7 +112,7 @@ export default function EditScreen() {
   };
 
   const handleImageChange = (e) => {
-    setSelectedImage(e.target.files[0]); // Update selected image file
+    setSelectedImage(e.target.files[0]);
   };
 
   return (

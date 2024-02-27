@@ -181,10 +181,10 @@ productRouter.put(
   '/:id',
   isAuth,
   isAdmin,
-  upload.single('image'), // Middleware for handling image upload
+  upload.single('image'),
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
-    const imagePath = req.file ? req.file.filename : null; // Access uploaded image filename
+    const imagePath = req.file ? req.file.filename : null; 
 
     const product = await Product.findById(productId);
     if (product) {
