@@ -5,11 +5,9 @@ import axios from 'axios';
 import { Store } from '../Store';
 import { getError } from '../utils';
 import Container from 'react-bootstrap/Container';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../component/LoadingBox';
-import MessageBox from '../component/MeassageBox';
 import Button from 'react-bootstrap/Button';
 
 const reducer = (state, action) => {
@@ -26,21 +24,11 @@ const reducer = (state, action) => {
       return { ...state, loadingUpdate: false };
     case 'UPDATE_FAIL':
       return { ...state, loadingUpdate: false };
-    case 'UPLOAD_REQUEST':
-      return { ...state, loadingUpload: true, errorUpload: '' };
-    case 'UPLOAD_SUCCESS':
-      return {
-        ...state,
-        loadingUpload: false,
-        errorUpload: '',
-      };
-    case 'UPLOAD_FAIL':
-      return { ...state, loadingUpload: false, errorUpload: action.payload };
-
     default:
       return state;
   }
 };
+
 export default function EditScreen() {
   const navigate = useNavigate();
   const params = useParams();
@@ -48,29 +36,34 @@ export default function EditScreen() {
 
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] = useReducer(reducer, { loading: true, error: '', });
-
+  const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: '',
+    loadingUpload: false, // Define loadingUpload in state initialization
+  });
+  
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
-  const [image, setImage] = useState('');
   const [category, setCategory] = useState('');
-  const [countInStock, setCountInStock] = useState('');
   const [brand, setBrand] = useState('');
+  const [countInStock, setCountInStock] = useState('');
   const [description, setDescription] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null); // State to hold selected image file
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`http://localhost:5000/products/${productId}`);
+        const { data } = await axios.get(
+          `http://localhost:5000/products/${productId}`
+        );
         setName(data.name);
         setSlug(data.slug);
         setPrice(data.price);
-        setImage(data.image);
         setCategory(data.category);
-        setCountInStock(data.countInStock);
         setBrand(data.brand);
+        setCountInStock(data.countInStock);
         setDescription(data.description);
         dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
@@ -87,26 +80,30 @@ export default function EditScreen() {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
+
+      const formData = new FormData(); // Create FormData object
+      formData.append('name', name);
+      formData.append('slug', slug);
+      formData.append('price', price);
+      formData.append('category', category);
+      formData.append('brand', brand);
+      formData.append('countInStock', countInStock);
+      formData.append('description', description);
+      if (selectedImage) {
+        formData.append('image', selectedImage); // Append selected image file
+      }
+
       await axios.put(
         `http://localhost:5000/products/${productId}`,
+        formData, // Pass FormData object
         {
-          _id: productId,
-          name,
-          slug,
-          price,
-          image,
-          category,
-          brand,
-          countInStock,
-          description,
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
         }
       );
-      dispatch({
-        type: 'UPDATE_SUCCESS',
-      });
+      dispatch({ type: 'UPDATE_SUCCESS' });
       toast.success('Product updated successfully');
       navigate('/admin/products');
     } catch (err) {
@@ -116,9 +113,9 @@ export default function EditScreen() {
   };
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    setSelectedImage(e.target.files[0]); // Update selected image file
   };
-  
+
   return (
     <Container className="small-container">
       <Helmet>

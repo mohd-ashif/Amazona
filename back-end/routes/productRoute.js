@@ -181,18 +181,17 @@ productRouter.put(
   '/:id',
   isAuth,
   isAdmin,
+  upload.single('image'), // Middleware for handling image upload
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
-    
-    const imagePath = req.file ? req.file.filename : null;
-    
+    const imagePath = req.file ? req.file.filename : null; // Access uploaded image filename
+
     const product = await Product.findById(productId);
     if (product) {
       product.name = req.body.name;
       product.slug = req.body.slug;
       product.price = req.body.price;
-      product.image = req.body.image;
-      product.images = req.body.images;
+      product.image = imagePath;
       product.category = req.body.category;
       product.brand = req.body.brand;
       product.countInStock = req.body.countInStock;
@@ -204,7 +203,6 @@ productRouter.put(
     }
   })
 );
-
 
 productRouter.get('/:id', async (req, res) => {
   const product = await Product.findById(req.params.id);
