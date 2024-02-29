@@ -33,7 +33,6 @@ export default function EditScreen() {
   const navigate = useNavigate();
   const params = useParams();
   const { id: productId } = params;
-
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] = useReducer(reducer, {
@@ -91,14 +90,13 @@ export default function EditScreen() {
       formData.append('description', description);
       formData.append('image', selectedImage);
       
-
       await axios.put(
         `http://localhost:5000/products/${productId}`,
         formData, 
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${userInfo.token}`,
+            Authorization: `Bearer ${userInfo.token}`, 
           },
         }
       );
@@ -208,7 +206,6 @@ export default function EditScreen() {
             {loadingUpdate && <LoadingBox></LoadingBox>}
           </div>
         </Form>
-
       )}
     </Container>
   );

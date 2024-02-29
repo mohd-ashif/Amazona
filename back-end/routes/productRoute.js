@@ -69,7 +69,13 @@ productRouter.get("/search", async (req, res) => {
 
     const product = await Product.find({ name: { $regex: search, $options: "i" } });
 
-    res.status(200).json({ product });
+    
+		const response = {
+			error: false,
+			product,
+		};
+
+    res.status(200).json({ response });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: true, message: "Internal Server Error" });

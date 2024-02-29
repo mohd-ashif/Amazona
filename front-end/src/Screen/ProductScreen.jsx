@@ -8,6 +8,8 @@ import MessageBox from '../component/MeassageBox';
 import { getError } from '../utils';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
+import { Col } from 'react-bootstrap';
+import ImageMagnifier from '../component/ImageMagnifire';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -127,10 +129,11 @@ function ProductScreen() {
    <Link to="/"><button   className="bg-slate-800 hover:bg-slate-600 text-white py-2 px-4 rounded-md mb-4">
       Back
     </button> </Link> 
-    </div>
+    </div> 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="md:col-span-1">
-          <img className="w-full rounded-md" src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${product.image}`} />
+        <ImageMagnifier src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${product.image}`} alt={product.name} height={'auto'} width={'100%'} />
+          
         </div>
         <div className="md:col-span-1">
           <div className="mb-4">
