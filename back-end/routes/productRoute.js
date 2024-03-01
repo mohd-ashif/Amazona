@@ -63,24 +63,18 @@ productRouter.get('/:id', async (req, res) => {
 });
 
 
-productRouter.get("/search", async (req, res) => {
+productRouter.get('/search', async (req, res) => {
+  const query = req.query.q;
   try {
-    const search = req.query.search || "";
-
-    const product = await Product.find({ name: { $regex: search, $options: "i" } });
-
-    
-		const response = {
-			error: false,
-			product,
-		};
-
-    res.status(200).json({ response });
+      const results = await Product.find({ $text: { $search: query } });
+      res.json(results);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: true, message: "Internal Server Error" });
+      console.error(err);
+      res.status(500).json({ message: 'Server Error' });
   }
 });
+
+
 
 // Admin products
 productRouter.get(

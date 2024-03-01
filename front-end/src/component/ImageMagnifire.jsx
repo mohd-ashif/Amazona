@@ -31,7 +31,7 @@ const ImageMagnifier = ({
             setShowMagnifier(true);
           }}
           onMouseMove={(e) => {
-            // update cursor position
+            // update cursor position 
             const elem = e.currentTarget;
             const { top, left } = elem.getBoundingClientRect();
   
