@@ -10,7 +10,7 @@ export default function SearchBox() {
   const [query, setQuery] = useState('');
   const submitHandler = (e) => {
     e.preventDefault();
-    navigate(query ? `/search?query=${query}` : '/search');
+    navigate(query ? `/search/?query=${query}` : '/search');
 };
 
 return (
@@ -21,7 +21,7 @@ return (
         name="q"
         id="q"
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="search products..."
+        placeholder="search"
         aria-label="Search Products"
         aria-describedby="button-search"
       ></FormControl>

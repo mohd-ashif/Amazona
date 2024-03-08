@@ -54,30 +54,37 @@ function App() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/products/categories`);
+        const { data } = await axios.get('http://localhost:5000/products/categories');
         setCategories(data);
-      } catch (err) {
-        toast.error(getError(err));
+      } catch (error) {
+        toast.error(getError(error));
       }
     };
+
     fetchCategories();
   }, []);
 
   return (
     <>
       <BrowserRouter>
-        <div
-          className={
-            sidebarIsOpen
-              ? 'd-flex flex-column site-container active-cont'
-              : 'd-flex flex-column site-container'
-          }
-        >
+      <div
+        className={
+          sidebarIsOpen
+            ? 'd-flex flex-column site-container active-cont'
+            : 'd-flex flex-column site-container'
+        }
+      >
           <ToastContainer position='bottom-center' limit={1} />
           <header>
             <Navbar bg='dark' variant='dark' expand='lg'>
               <Container>
-
+              
+              <Button
+                variant="dark"
+                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+              >
+                <i className="fas fa-bars"></i>
+              </Button>
 
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav'>
@@ -97,7 +104,6 @@ function App() {
                           </Badge>
                         )}
                       </Link>
-
 
                       {userInfo ? (
                         <NavDropdown title={userInfo.name} id='basic-nav-dropdown'>
@@ -141,7 +147,30 @@ function App() {
             </Navbar>
           </header>
 
+          <div
+          className={
+            sidebarIsOpen
+              ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
+              : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
+          }
+        >
+        <Nav className="flex-column text-white w-100 p-3">
+  <Nav.Item>
+    <strong>Categories</strong>
+  </Nav.Item>
+  {categories.map((category) => (
+    <Nav.Item key={category}>
+      <LinkContainer  className='text-slate-100'
+        to={{ pathname: '/search', search: `category=${category}` }}
+        onClick={() => setSidebarIsOpen(false)}
+      >
+        <Nav.Link className="custom-link">{category}</Nav.Link>
+      </LinkContainer>
+    </Nav.Item>
+  ))}
+</Nav>
 
+        </div>
 
           <main>
             <Container className='mt-3  '>
@@ -176,7 +205,7 @@ function App() {
               </Routes>
             </Container>
           </main>
-          <footer>
+          <footer style={{background:"#212529"}}>
             <div className="container mx-auto  items-center"> 
           <p className="mt-2">© 2024 All rights reserved</p>
           </div>

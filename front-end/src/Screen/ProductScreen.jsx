@@ -120,15 +120,15 @@ function ProductScreen() {
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
      
- 
-
-    
-  
     <div className="container mx-auto px-4">
           <div className="container mx-auto px-4">
-   <Link to="/"><button   className="bg-slate-800 hover:bg-slate-600 text-white py-2 px-4 rounded-md mb-4">
-      Back
-    </button> </Link> 
+          <button
+  onClick={() => window.history.back()}
+  className="bg-slate-800 hover:bg-slate-600 text-white py-2 px-4 rounded-md mb-4"
+>
+  Back
+</button>
+
     </div> 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="md:col-span-1">

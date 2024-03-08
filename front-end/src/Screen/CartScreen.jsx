@@ -65,7 +65,7 @@ export default function CartScreen() {
                       <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
 
-                    <Col md={3}>
+                    <Col md={3} >
                       <Button
                         onClick={() => updateCartHandler(item, item.quantity - 1)}
                         variant="light"
@@ -125,3 +125,4 @@ export default function CartScreen() {
     </div>
   );
 }
+

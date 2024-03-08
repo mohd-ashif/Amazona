@@ -91,7 +91,7 @@ orderRouter.get(
     }
   }));
   
-  // PUT: Accept an order (Admin only)
+  // Accept an order (Admin only)
   orderRouter.put('/:id/accept', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
     try {
       const id = req.params.id;
