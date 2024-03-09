@@ -34,7 +34,6 @@ const reducer = (state, action) => {
   }
 };
 
-
 const prices = [
   {
     name: '$1 to $50',
@@ -111,7 +110,7 @@ export default function SearchScreen() {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get(`http//:localhost:5000/products/categories`);
-        if (Array.isArray(data.categories)) {
+        if (data.categories) {
           setCategories(data.categories);
         } else {
           console.error('Categories data is not an array:', data.categories);
@@ -135,6 +134,7 @@ export default function SearchScreen() {
       skipPathname ? '' : '/search?'
     }category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
+  
   return (
     <div>
       <Helmet>
@@ -176,8 +176,7 @@ export default function SearchScreen() {
     ))}
   </ul>
 </div>
-
-          <div>
+  <div>
   <h3>Rating </h3>
   <ul>
     {ratings.map((r) => (
@@ -185,9 +184,9 @@ export default function SearchScreen() {
         <input
           type="checkbox"
           id={`ratingCheckbox_${r.rating}`}
-          checked={`${r.rating}` === `${rating}`}
-          onChange={() => navigate(getFilterUrl({ rating: r.rating }))}
-        />
+          checked={`${r.rating}` === `${rating}`} 
+          onChange={() => navigate(getFilterUrl({ rating: r.rating }))}/>
+
         <label htmlFor={`ratingCheckbox_${r.rating}`} className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}>
           <Rating caption={' & up'} rating={r.rating}></Rating>
         </label>
@@ -218,7 +217,7 @@ export default function SearchScreen() {
                 <Col md={6}>
                   <div>
                     {countProducts === 0 ? 'No' : countProducts} Results 
-                    {query !== 'all' && ' : ' + query}
+                     {query !== 'all' && ' : ' + query}
                     {category !== 'all' && ' : ' + category}
                     {price !== 'all' && ' : Price ' + price}
                     {rating !== 'all' && ' : Rating ' + rating + ' & up'}
@@ -227,7 +226,7 @@ export default function SearchScreen() {
                       <Button  
                         variant="light"
                         onClick={() => navigate('/search')} >
-                          
+
                         <i className="fas fa-times-circle"></i>
                       </Button>
                     ) : null}
@@ -241,6 +240,7 @@ export default function SearchScreen() {
                       navigate(getFilterUrl({ order: e.target.value }));
                     }}
                   >
+
                     <option value="newest">Newest Arrivals</option>
                     <option value="lowest">Price: Low to High</option>
                     <option value="highest">Price: High to Low</option>
@@ -260,7 +260,7 @@ export default function SearchScreen() {
                 ))}
               </Row>
 
-              <div className='p-3'>
+              <div className='pb-3'>
                 {[...Array(pages).keys()].map((x) => (
                  <LinkContainer
                  key={x + 1}
