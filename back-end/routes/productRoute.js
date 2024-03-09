@@ -28,13 +28,13 @@ const upload = multer({
   },
 });
     
-
+//get all Products
 productRouter.get('/', async (req, res) => {
   const products = await Product.find();
   res.send(products);
 });
 
-
+// Set search and Filter
 const PAGE_SIZE = 3;
 
 productRouter.get(
@@ -49,6 +49,7 @@ productRouter.get(
     const order = query.order || '';
     const searchQuery = query.query || '';
 
+ 
     const queryFilter =
       searchQuery && searchQuery !== 'all'
         ? {
@@ -58,6 +59,7 @@ productRouter.get(
             },
           }
         : {};
+
     const categoryFilter = category && category !== 'all' ? { category } : {};
     const ratingFilter =
       rating && rating !== 'all'
@@ -72,12 +74,12 @@ productRouter.get(
         ? {
             // 1-50
             price: {
-              $gte: Number(price.split('-')[0]),
+              $gte: Number(price.split('-') [0]),
               $lte: Number(price.split('-')[1]),
             },
           }
         : {};
-    const sortOrder =
+    const sortOrder = 
       order === 'featured'
         ? { featured: -1 }
         : order === 'lowest'
@@ -96,7 +98,7 @@ productRouter.get(
       ...priceFilter,
       ...ratingFilter,
     })
-      .sort(sortOrder)
+      .sort(sortOrder) 
       .skip(pageSize * (page - 1))
       .limit(pageSize);
 
