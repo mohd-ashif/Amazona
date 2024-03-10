@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Enable CORS globally
 app.use(cors({
-  origin :[" http://localhost:3000", 'http://ecommerce-mern-app.render.com']
+  origin :[" http://localhost:5000", 'http://ecommerce-mern-app.render.com']
 }));
 
 app.get('/', (req, res) => {
