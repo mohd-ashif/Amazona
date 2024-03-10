@@ -4,8 +4,10 @@
   "description": "# Project",
   "main": "index.js",
   "scripts": {
-    "build": "cd back-end && npm install  && cd ../front-end && npm install --legacy-peer-deps  && npm run build", 
-    "start": "node backend/server.js",
+    "build": "cd back-end && npm install && cd ../front-end && npm install && npm run dev",
+    "start": "concurrently \"npm run start-backend\" \"npm run start-frontend\"",
+    "start-backend": "cd back-end && node server.js",
+    "start-frontend": "cd front-end && npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/mohd-ashif/E-commerce/issue"
   },
-  "homepage": "https://github.com/mohd-ashif/E-commerce#readme"
+  "homepage": "https://github.com/mohd-ashif/E-commerce#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
