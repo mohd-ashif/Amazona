@@ -19,11 +19,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Enable CORS globally
-app.use(cors({
-  origin:process.env.FRONT_URL,
-  credentials:"true",
-
-}));
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Server is running...')

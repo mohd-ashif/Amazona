@@ -34,6 +34,7 @@ const reducer = (state, action) => {
   }
 };
 
+
 const prices = [
   {
     name: '$1 to $50',
@@ -110,7 +111,7 @@ export default function SearchScreen() {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get(`http//:localhost:5000/products/categories`);
-        if (data.categories) {
+        if (Array.isArray(data.categories)) {
           setCategories(data.categories);
         } else {
           console.error('Categories data is not an array:', data.categories);
@@ -134,7 +135,6 @@ export default function SearchScreen() {
       skipPathname ? '' : '/search?'
     }category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
-  
   return (
     <div>
       <Helmet>
@@ -176,7 +176,8 @@ export default function SearchScreen() {
     ))}
   </ul>
 </div>
-  <div>
+      
+          <div>
   <h3>Rating </h3>
   <ul>
     {ratings.map((r) => (
