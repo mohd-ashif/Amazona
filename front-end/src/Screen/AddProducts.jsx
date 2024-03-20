@@ -1,13 +1,9 @@
 import axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Store } from '../Store';
 import { Helmet } from 'react-helmet-async';
 
 const AddProductForm = () => {
-  const { state } = useContext(Store);
-  const { userInfo } = state;
-
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [brand, setBrand] = useState('');
@@ -18,7 +14,7 @@ const AddProductForm = () => {
   const [rating, setRating] = useState('');
   const [numReviews, setNumReviews] = useState('');
   const [image, setImage] = useState(null);
- 
+  const [ offerPrice , setOfferPrice] = ('')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,17 +30,25 @@ const AddProductForm = () => {
     formData.append('rating', rating);
     formData.append('numReviews', numReviews);
     formData.append('image', image);
+    formData.append("offerPrice", offerPrice);
 
     try {
-      const response = await axios.post("http://localhost:5000/products/create", formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-       
-      });
-      console.log(response.data)  
-      toast.success('Product created successfully');
-     console.log(response.image)
+      const response = await axios.post(
+        "http://localhost:5000/products/create",
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        console.log(response.data);
+        toast.success('Product created successfully');
+      } else {
+        throw new Error('Failed to create product');
+      }
     } catch (error) {
       toast.error('Error creating product');
       console.error('Error:', error);
@@ -137,6 +141,19 @@ const AddProductForm = () => {
         placeholder="Product Price"
         name="price"
         onChange={(e) => setPrice(e.target.value)}
+      />
+    </div>
+    <div className="mb-4 ">
+      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="offerPrice">
+       Offer Price
+      </label>
+      <input
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="offerPrice"
+        type="number"
+        placeholder="Offer Price"
+        name="offerPrice"
+        onChange={(e) => setOfferPrice(e.target.value)}
       />
     </div>
     <div className="mb-4">

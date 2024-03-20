@@ -46,7 +46,7 @@ function HomeScreen() {
   return (
     <div>
       <Helmet>
-        <title>E-commerce</title>
+        <title>Gentify</title>
       </Helmet>
     
       <div className="products">

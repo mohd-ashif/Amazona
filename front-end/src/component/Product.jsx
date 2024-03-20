@@ -35,7 +35,7 @@ function Product(props) {
           <h3 className="text-gray-800 font-semibold mb-2">{product.name}</h3>
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
-        <p className="text-gray-700 font-semibold mt-2">${product.price}</p>
+        <p className="text-gray-700 font-semibold mt-2 line-through" >${product.price}</p>
         {product.countInStock === 0 ? (
           <button className="bg-red-500 text-white py-2 px-4 rounded cursor-not-allowed" disabled>
             Out of stock

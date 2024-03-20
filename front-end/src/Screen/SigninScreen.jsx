@@ -27,7 +27,7 @@ export default function SigninScreen() {
       const { data } = await Axios.post('http://localhost:5000/users/signin', {
         email,
         password,
-      });
+      });  
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');
@@ -35,7 +35,7 @@ export default function SigninScreen() {
       toast.error(getError(err));
     }
   };
-  
+   
   useEffect(() => {
     if (userInfo) {
       navigate(redirect);

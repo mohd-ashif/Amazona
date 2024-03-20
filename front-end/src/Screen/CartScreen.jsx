@@ -14,9 +14,8 @@ import { toast } from 'react-toastify';
 export default function CartScreen() {
     const navigate = useNavigate()
     const { state, dispatch: ctxDispatch } = useContext(Store);
-    const {
-      cart: { cartItems },
-    } = state;
+    const {cart: { cartItems },} = state;
+
     const updateCartHandler = async (item, quantity) => {
       const { data } = await axios.get(`http://localhost:5000/products/${item._id}`);
       if (data.countInStock < quantity) {
@@ -82,7 +81,7 @@ export default function CartScreen() {
                         <i className="fas fa-plus-circle"></i>
                       </Button>
                     </Col>
-                    <Col md={3}  >${item.price}</Col>
+                    <Col md={3}  >${item.offerPrice}</Col>
                     <Col md={2}>
                       <Button onClick={()=> removeItemHandler(item)}
                        variant="light">

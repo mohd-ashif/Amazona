@@ -39,9 +39,9 @@ export default function PlaceOrderScreen() {
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; 
 
   cart.itemsPrice = round2( 
-    cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+    cart.cartItems.reduce((a, c) => a + c.quantity * c.offerPrice, 0)
   );
-  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
+  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(8);
   cart.taxPrice = round2(0.15 * cart.itemsPrice);
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
@@ -122,7 +122,6 @@ export default function PlaceOrderScreen() {
                 {cart.cartItems.map((item) => (
                   <ListGroup.Item key={item._id}>
                     <Row className="align-items-center">
-                    
                       <Col md={6}>
                         <img
                           src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${item.image}`}
@@ -135,7 +134,7 @@ export default function PlaceOrderScreen() {
                       <Col md={3}>
                         <span>{item.quantity}</span>
                       </Col>
-                      <Col md={3}>${item.price}</Col>
+                      <Col md={3}>${item.offerPrice}</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}
@@ -143,6 +142,7 @@ export default function PlaceOrderScreen() {
               <Link to="/cart">Edit</Link>
             </Card.Body>
           </Card>
+          
         </Col>
         <Col md={4}>
           <Card>

@@ -114,6 +114,9 @@ function ProductScreen() {
     }
   };
 
+  const offerPercentage = ((product.price - product.offerPrice) / product.price) * 100 ;
+  const offer = offerPercentage.toFixed(0)
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -146,7 +149,19 @@ function ProductScreen() {
             <Rating rating={product.rating} numReviews={product.numReviews} />
           </div>
           <hr />
-          <div className="mb-4">Price: ${product.price}</div>
+          <div className="mb-4">
+  <div className="flex justify-between">
+    <div className="flex justify-center"> 
+      <span className="mr-2"> Special Price:</span> 
+      <span className='text-xl'>${product.offerPrice}</span> <span className="line-through ml-5 text-slate-500">${product.price}  </span> <span className='ml-5 text-orange-500'> {offerPercentage.toFixed(0)}% off</span> 
+    </div>
+    <div className="flex items-center "> 
+     
+    
+    </div>
+  </div>
+</div>
+
           <hr />
           <div className="mb-4">
             <div className="mb-4"> Brand :{product.brand}</div>
@@ -160,8 +175,13 @@ function ProductScreen() {
         <div>
           <div className="mb-4">
             <div className="flex justify-between">
-              <div>Price:</div>
-              <div>${product.price}</div>
+              <div>Special Price:</div>
+              <div>${product.offerPrice}</div>
+            </div>
+            <hr />
+            <div className="flex justify-between">
+              <div>Offer :</div>
+              <div>{offer} % </div>
             </div>
 
           </div>

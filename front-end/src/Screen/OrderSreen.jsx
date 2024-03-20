@@ -23,14 +23,14 @@ function reducer(state, action) {
       return { ...state, loading: false, order: action.payload, error: '' };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
-      case 'PAY_REQUEST':
-        return { ...state, loadingPay: true };
-      case 'PAY_SUCCESS':
-        return { ...state, loadingPay: false, successPay: true };
-      case 'PAY_FAIL':
-        return { ...state, loadingPay: false };
-      case 'PAY_RESET':
-        return { ...state, loadingPay: false, successPay: false }; 
+    case 'PAY_REQUEST':
+      return { ...state, loadingPay: true };
+    case 'PAY_SUCCESS':
+      return { ...state, loadingPay: false, successPay: true };
+    case 'PAY_FAIL':
+      return { ...state, loadingPay: false };
+    case 'PAY_RESET':
+      return { ...state, loadingPay: false, successPay: false };
 
     default:
       return state;
@@ -53,7 +53,6 @@ export default function OrderScreen() {
       loadingPay: false,
     });
 
-    
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
   function createOrder(data, actions) {
@@ -74,9 +73,7 @@ export default function OrderScreen() {
     return actions.order.capture().then(async function (details) {
       try {
         dispatch({ type: 'PAY_REQUEST' });
-        const { data } = await axios.put(
-          `http://localhost:5000/orders/${order._id}/pay`,
-          details,
+        const { data } = await axios.put( `http://localhost:5000/orders/${order._id}/pay`,details,
           {
             headers: { authorization: `Bearer ${userInfo.token}` },
           }
@@ -92,8 +89,8 @@ export default function OrderScreen() {
   function onError(err) {
     toast.error(getError(err));
   }
-      
-     
+
+
   useEffect(() => {
     const fetchOrder = async () => {
       try {
@@ -111,26 +108,26 @@ export default function OrderScreen() {
       return navigate('/login');
     }
     if (!order._id || successPay || (order._id && order._id !== orderId)) {
-        fetchOrder();
-        if (successPay) {
-          dispatch({ type: 'PAY_RESET' });
-        }
-      } else {
-        const loadPaypalScript = async () => {
-          const { data: clientId } = await axios.get('http://localhost:5000/keys/paypal', {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          });
-          paypalDispatch({
-            type: 'resetOptions',
-            value: {
-              'client-id': clientId,
-              currency: 'USD',
-            },
-          });
-          paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
-        };
-        loadPaypalScript();
+      fetchOrder();
+      if (successPay) {
+        dispatch({ type: 'PAY_RESET' });
       }
+    } else {
+      const loadPaypalScript = async () => {
+        const { data: clientId } = await axios.get('http://localhost:5000/keys/paypal', {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        paypalDispatch({
+          type: 'resetOptions',
+          value: {
+            'client-id': clientId,
+            currency: 'USD',
+          },
+        });
+        paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
+      };
+      loadPaypalScript();
+    }
   }, [order, userInfo, orderId, navigate]);
   return loading ? (
     <LoadingBox></LoadingBox>
@@ -214,7 +211,7 @@ export default function OrderScreen() {
                   <Row>
                     <Col>Items</Col>
                     <Col>${order.itemsPrice.toFixed(2)}</Col>
-                    </Row>
+                  </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
@@ -244,7 +241,7 @@ export default function OrderScreen() {
                       <LoadingBox />
                     ) : (
                       <div>
-                         <PayPalButtons
+                        <PayPalButtons
                           createOrder={createOrder}
                           onApprove={onApprove}
                           onError={onError}

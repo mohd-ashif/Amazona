@@ -20,7 +20,7 @@ const reducer = (state, action) => {
     case 'FETCH_SUCCESS':
       return {
         ...state,
-        products: action.payload.products || [], 
+        products: action.payload.products || [],
         page: action.payload.page,
         pages: action.payload.pages,
         countProducts: action.payload.countProducts,
@@ -75,9 +75,9 @@ export const ratings = [
 export default function SearchScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
-  const sp = new URLSearchParams(search); // /search?category=Shirts 
+  const sp = new URLSearchParams(search); // search?category=Shirts 
   const category = sp.get('category') || 'all';
-  const query = sp.get('query') || 'all'; 
+  const query = sp.get('query') || 'all';
   const price = sp.get('price') || 'all';
   const rating = sp.get('rating') || 'all';
   const order = sp.get('order') || 'newest';
@@ -89,29 +89,28 @@ export default function SearchScreen() {
       error: '',
     });
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const { data } = await axios.get(
-            `http://localhost:5000/products/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}` 
-          );
-          dispatch({ type: 'FETCH_SUCCESS', payload: data });
-        } catch (err) {
-          dispatch({
-            type: 'FETCH_FAIL',
-            payload: getError(error),
-          });
-        }
-      };
-      fetchData();
-    }, [category, error, order, page, price, query, rating]);
-    
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get( `http://localhost:5000/products/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
+        );
+        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+      } catch (err) {
+        dispatch({
+          type: 'FETCH_FAIL',
+          payload: getError(error),
+        });
+      }
+    };
+    fetchData();
+  }, [category, error, order, page, price, query, rating]);
+
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get(`http//:localhost:5000/products/categories`);
-        if (Array.isArray(data.categories)) {
+        if (data.categories) {
           setCategories(data.categories);
         } else {
           console.error('Categories data is not an array:', data.categories);
@@ -120,10 +119,10 @@ export default function SearchScreen() {
         toast.error(getError(err));
       }
     };
-  
+
     fetchCategories();
-  }, [dispatch]); 
-  
+  }, [dispatch]);
+
   const getFilterUrl = (filter, skipPathname) => {
     const filterPage = filter.page || page;
     const filterCategory = filter.category || category;
@@ -131,9 +130,8 @@ export default function SearchScreen() {
     const filterRating = filter.rating || rating;
     const filterPrice = filter.price || price;
     const sortOrder = filter.order || order;
-    return `${
-      skipPathname ? '' : '/search?'
-    }category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
+    return `${skipPathname ? '' : '/search?'
+      }category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
   return (
     <div>
@@ -142,71 +140,71 @@ export default function SearchScreen() {
       </Helmet>
       <Row>
         <Col md={3}>
-        <button
-  onClick={() => window.history.back()}
-  className="bg-slate-800 hover:bg-slate-600 text-white py-2 px-4 rounded-md mb-4">
-  Back
-</button>
-<div>
-  <h3>Price</h3>
-  <ul>
-    <li>
-      <input
-        type="checkbox"
-        id="anyPriceCheckbox"
-        checked={'all' === price}
-        onChange={() => navigate(getFilterUrl({ price: 'all' }))}
-      />
-      <label htmlFor="anyPriceCheckbox" className={'all' === price ? 'text-bold' : ''}>
-        Any
-      </label>
-    </li>
-    {prices.map((p) => (
-      <li key={p.value}>
-        <input
-          type="checkbox"
-          id={`priceCheckbox_${p.value}`}
-          checked={p.value === price}
-          onChange={() => navigate(getFilterUrl({ price: p.value }))}
-        />
-        <label htmlFor={`priceCheckbox_${p.value}`} className={p.value === price ? 'text-bold' : ''}>
-          {p.name}
-        </label>
-      </li>
-    ))}
-  </ul>
-</div>
-      
+          <button
+            onClick={() => window.history.back()}
+            className="bg-slate-800 hover:bg-slate-600 text-white py-2 px-4 rounded-md mb-4">
+            Back
+          </button>
           <div>
-  <h3>Rating </h3>
-  <ul>
-    {ratings.map((r) => (
-      <li key={r.name}>
-        <input
-          type="checkbox"
-          id={`ratingCheckbox_${r.rating}`}
-          checked={`${r.rating}` === `${rating}`} 
-          onChange={() => navigate(getFilterUrl({ rating: r.rating }))}/>
+            <h3>Price</h3>
+            <ul>
+              <li>
+                <input
+                  type="checkbox"
+                  id="anyPriceCheckbox"
+                  checked={'all' === price}
+                  onChange={() => navigate(getFilterUrl({ price: 'all' }))}
+                />
+                <label htmlFor="anyPriceCheckbox" className={'all' === price ? 'text-bold' : ''}>
+                  Any
+                </label>
+              </li>
+              {prices.map((p) => (
+                <li key={p.value}>
+                  <input
+                    type="checkbox"
+                    id={`priceCheckbox_${p.value}`}
+                    checked={p.value === price}
+                    onChange={() => navigate(getFilterUrl({ price: p.value }))}
+                  />
+                  <label htmlFor={`priceCheckbox_${p.value}`} className={p.value === price ? 'text-bold' : ''}>
+                    {p.name}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <label htmlFor={`ratingCheckbox_${r.rating}`} className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}>
-          <Rating caption={' & up'} rating={r.rating}></Rating>
-        </label>
-      </li>
-    ))}
-    <li>
-      <input
-        type="checkbox"
-        id="allRatingsCheckbox"
-        checked={rating === 'all'}
-        onChange={() => navigate(getFilterUrl({ rating: 'all' }))}
-      />
-      <label htmlFor="allRatingsCheckbox" className={rating === 'all' ? 'text-bold' : ''}>
-        <Rating caption={' & up'} rating={0}></Rating>
-      </label>
-    </li>
-  </ul>
-</div>
- </Col>
+          <div>
+            <h3>Rating </h3>
+            <ul>
+              {ratings.map((r) => (
+                <li key={r.name}>
+                  <input
+                    type="checkbox"
+                    id={`ratingCheckbox_${r.rating}`}
+                    checked={`${r.rating}` === `${rating}`}
+                    onChange={() => navigate(getFilterUrl({ rating: r.rating }))} />
+
+                  <label htmlFor={`ratingCheckbox_${r.rating}`} className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}>
+                    <Rating caption={' & up'} rating={r.rating}></Rating>
+                  </label>
+                </li>
+              ))}
+              <li>
+                <input
+                  type="checkbox"
+                  id="allRatingsCheckbox"
+                  checked={rating === 'all'}
+                  onChange={() => navigate(getFilterUrl({ rating: 'all' }))}
+                />
+                <label htmlFor="allRatingsCheckbox" className={rating === 'all' ? 'text-bold' : ''}>
+                  <Rating caption={' & up'} rating={0}></Rating>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </Col>
         <Col md={9}>
           {loading ? (
             <LoadingBox></LoadingBox>
@@ -217,14 +215,14 @@ export default function SearchScreen() {
               <Row className="justify-content-between mb-3">
                 <Col md={6}>
                   <div>
-                    {countProducts === 0 ? 'No' : countProducts} Results 
-                     {query !== 'all' && ' : ' + query}
+                    {countProducts === 0 ? 'No' : countProducts} Results
+                    {query !== 'all' && ' : ' + query}
                     {category !== 'all' && ' : ' + category}
                     {price !== 'all' && ' : Price ' + price}
                     {rating !== 'all' && ' : Rating ' + rating + ' & up'}
 
-                    {query !== 'all' ||category !== 'all' || rating !== 'all' || price !== 'all' ? (
-                      <Button  
+                    {query !== 'all' || category !== 'all' || rating !== 'all' || price !== 'all' ? (
+                      <Button
                         variant="light"
                         onClick={() => navigate('/search')} >
 
@@ -263,21 +261,21 @@ export default function SearchScreen() {
 
               <div className='pb-3'>
                 {[...Array(pages).keys()].map((x) => (
-                 <LinkContainer
-                 key={x + 1}
-                 className="mx-1"
-                 to={{
-                   pathname: '/search',
-                   search: getFilterUrl({ page: x + 1 }, true), 
-                 }}
-               >
-                 <Button
-                   className={Number(page) === x + 1 ? 'text-bold' : ''}
-                   variant="light"
-                 >
-                   {x + 1}
-                 </Button>
-               </LinkContainer>
+                  <LinkContainer
+                    key={x + 1}
+                    className="mx-1"
+                    to={{
+                      pathname: '/search',
+                      search: getFilterUrl({ page: x + 1 }, true),
+                    }}
+                  >
+                    <Button
+                      className={Number(page) === x + 1 ? 'text-bold' : ''}
+                      variant="light"
+                    >
+                      {x + 1}
+                    </Button>
+                  </LinkContainer>
                 ))}
               </div>
             </>

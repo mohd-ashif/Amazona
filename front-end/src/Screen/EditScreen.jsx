@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../component/LoadingBox';
 import Button from 'react-bootstrap/Button';
+import MessageBox from "../component/MeassageBox"
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -48,7 +49,9 @@ export default function EditScreen() {
   const [brand, setBrand] = useState('');
   const [countInStock, setCountInStock] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedImage, setSelectedImage] = useState(null); 
+  const [image, setImage] = useState(null);
+  const [timer, setTimer] = useState('');
+  const [offerPrice, setOfferPrice] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,6 +63,9 @@ export default function EditScreen() {
         setName(data.name);
         setSlug(data.slug);
         setPrice(data.price);
+        setImage(data.image);
+        setTimer(data.timer);
+        setOfferPrice(data.offerPrice);
         setCategory(data.category);
         setBrand(data.brand);
         setCountInStock(data.countInStock);
@@ -75,6 +81,10 @@ export default function EditScreen() {
     fetchData();
   }, [productId]);
 
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -88,7 +98,9 @@ export default function EditScreen() {
       formData.append('brand', brand);
       formData.append('countInStock', countInStock);
       formData.append('description', description);
-      formData.append('image', selectedImage);
+      formData.append('image', image);
+      formData.append('timer', timer);
+      formData.append('offerPrice', offerPrice);
       
       await axios.put(
         `http://localhost:5000/products/${productId}`,
@@ -107,10 +119,6 @@ export default function EditScreen() {
       toast.error(getError(err));
       dispatch({ type: 'UPDATE_FAIL' });
     }
-  };
-
-  const handleImageChange = (e) => {
-    setSelectedImage(e.target.files[0]);
   };
 
   return (
@@ -132,8 +140,8 @@ export default function EditScreen() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full"
-            />
+              className="w-full" />
+
           </Form.Group>
           <Form.Group controlId="slug" className="mb-3">
             <Form.Label>Slug</Form.Label>
@@ -141,8 +149,8 @@ export default function EditScreen() {
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
               required
-              className="w-full"
-            />
+              className="w-full" />
+
           </Form.Group>
           <Form.Group controlId="price" className="mb-3">
             <Form.Label>Price</Form.Label>
@@ -153,6 +161,17 @@ export default function EditScreen() {
               className="w-full"
             />
           </Form.Group>
+
+          <Form.Group controlId="offerPrice" className="mb-3">
+            <Form.Label>Offer Price</Form.Label>
+            <Form.Control
+              value={offerPrice}
+              onChange={(e) => setOfferPrice(e.target.value)}
+              required
+              className="w-full"
+            />
+          </Form.Group>
+        
           <Form.Group className="mb-3" controlId="additionalImageFile">
             <Form.Label>Upload Image</Form.Label>
             <Form.Control
@@ -161,7 +180,6 @@ export default function EditScreen() {
             />
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
-
 
           <Form.Group controlId="category" className="mb-3">
             <Form.Label>Category</Form.Label>
