@@ -4,12 +4,11 @@ import expressAsyncHandler from 'express-async-handler';
 import { isAdmin, isAuth } from '../utils.js';
 import multer from 'multer';
 import path from 'path'; 
-
+import PDFDocument from 'pdfkit';
 
 const productRouter = express.Router(); 
 
 productRouter.use('/uploads', express.static('uploads'));
-
 
 // Image upload
 const storage = multer.diskStorage({
@@ -20,10 +19,7 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname));
   },
 });
-
-
-
-             
+      
 const upload = multer({
   storage: storage,
   limits: {
@@ -37,7 +33,7 @@ productRouter.get('/', async (req, res) => {
   res.send(products);
 });
 
-// Set search and Filter
+// Set search  , Filter , Sort ,Pagination
 const PAGE_SIZE = 3;
 
 productRouter.get(
@@ -128,6 +124,7 @@ productRouter.get(
   })
 );
 
+// GET product by slug
 productRouter.get('/slug/:slug', async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });
   if (product) {
@@ -199,7 +196,7 @@ productRouter.post(
   })
 );
 
-
+// DELETE a product by ID
 productRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
   try {
     const id = req.params.id;
@@ -216,10 +213,11 @@ productRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, re
   }
 }));
 
-
+// POST create a new product  (only admin)
 productRouter.post(
   '/create',
   upload.single('image'),
+  
   expressAsyncHandler(async (req, res) => {
     try {
      
@@ -238,6 +236,7 @@ productRouter.post(
         countInStock: req.body.countInStock,
         rating: req.body.rating,
         numReviews: req.body.numReviews,
+        offerPrice:req.body.offerPrice,
         description: req.body.description,
       });
 
@@ -250,7 +249,7 @@ productRouter.post(
   })
 );
 
-
+// PUT update a product by ID (only Admin)
 productRouter.put(
   '/:id',
   isAuth,
@@ -269,7 +268,10 @@ productRouter.put(
       product.category = req.body.category;
       product.brand = req.body.brand;
       product.countInStock = req.body.countInStock;
+      product.offerPrice = req.body.offerPrice;
       product.description = req.body.description;
+      
+      
       await product.save();
       res.send({ message: 'Product Updated' });
     } else {
@@ -278,6 +280,7 @@ productRouter.put(
   })
 );
 
+// GET a product by ID
 productRouter.get('/:id', async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (product) {
@@ -286,5 +289,79 @@ productRouter.get('/:id', async (req, res) => {
     res.status(404).send({ message: 'Product Not Found' });
   }
 });
+
+
+// Route to download purchase statement
+productRouter.get(
+  '/purchase/statement',
+  isAuth, // Middleware to ensure user is authenticated
+  async (req, res) => {
+    try {
+      const userId = req.user._id; // Assuming user ID is stored in the request object after authentication
+
+      // Fetch purchase history for the user
+      const purchases = await Product.find({ user: userId }).populate('product', 'name amount');
+
+      // Prepare statement data
+      const statementData = purchases.map(purchase => ({
+        productName: purchase.product.name,
+        amount: purchase.amount,
+        date: purchase.createdAt,
+      }));
+
+      // Generate PDF statement (you need to implement this part)
+
+      // For demonstration, let's assume we have a function called generatePDFStatement
+      const pdfBuffer = await generatePDFStatement(statementData);
+
+      // Set response headers for file download
+      res.set({
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename="purchase_statement.pdf"',
+      });
+
+      // Send the generated PDF as a response
+      res.send(pdfBuffer);
+    } catch (error) {
+      console.error('Error generating statement:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+);
+
+
+const generatePDFStatement = async (statementData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const doc = new PDFDocument(); // Create a new PDF document
+
+      // Add content to the PDF document
+      doc.fontSize(12);
+      doc.text('Purchase Statement', { align: 'center' });
+      doc.moveDown();
+      
+      statementData.forEach((item, index) => {
+        doc.text(`Product Name: ${item.productName}`);
+        doc.text(`Amount: ${item.amount}`);
+        doc.text(`Date: ${item.date}`);
+        doc.moveDown();
+      });
+
+      // Save the PDF document to a buffer
+      const buffers = [];
+      doc.on('data', buffers.push.bind(buffers));
+      doc.on('end', () => {
+        const pdfBuffer = Buffer.concat(buffers);
+        resolve(pdfBuffer);
+      });
+
+      // Finalize the PDF document
+      doc.end();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 
 export default productRouter

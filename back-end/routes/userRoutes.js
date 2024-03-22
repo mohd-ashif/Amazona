@@ -6,6 +6,7 @@ import expressAsyncHandler from 'express-async-handler'
 
 const userRouter = express.Router();
 
+// Sign in endpoint
 userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
     const { email, password } = req.body;
   
@@ -24,6 +25,7 @@ userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
     }
   }));
    
+ // Sign up endpoint 
   userRouter.post(
     '/signup',
     expressAsyncHandler(async (req, res) => {
@@ -44,6 +46,7 @@ userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
     })
   );
   
+  // Update user profile endpoint
   userRouter.put(
     '/profile',
     isAuth,
@@ -70,6 +73,7 @@ userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
     })
   );
 
+  // Get all users endpoint
   userRouter.get('/', isAuth, expressAsyncHandler ( async (req, res)=> {
     const users = await User.find({})
      if (users){
@@ -81,6 +85,7 @@ userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
     }
   }))
 
+  // Delete user by ID endpoint`
   userRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
     try {
       const id = req.params.id;

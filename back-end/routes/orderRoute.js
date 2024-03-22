@@ -1,7 +1,14 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Order from '../model/orderModel.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { isAuth , isAdmin} from '../utils.js';
+import twilio from 'twilio';
+
+
+
 
 const orderRouter = express.Router();
 
@@ -56,7 +63,11 @@ orderRouter.get(
     })
   );
   
-  // Mark an order as paid
+  // Mark an order as paid ;
+
+  const accountSid = process.env.ACCOUNT_SID;
+const authToken = process.env.AUTH_TOKEN;
+const client = twilio(accountSid, authToken);
   orderRouter.put(
     '/:id/pay',
     isAuth,
@@ -73,13 +84,26 @@ orderRouter.get(
         };
   
         const updatedOrder = await order.save();
+  
+        // Sending SMS notification
+        try {
+          await client.messages.create({
+            from: '+13158601357', // Twilio phone number
+            to: import.meta.env.MY_PHONE_NUMBER, 
+            body: `Your order ${updatedOrder.email_address} has been paid successfully on ${req.body.update_time}!`,
+          });
+          console.log('SMS notification sent successfully.');
+        } catch (error) {
+          console.error('Error sending SMS notification:', error);
+        }
+  
         res.send({ message: 'Order Paid', order: updatedOrder });
       } else {
         res.status(404).send({ message: 'Order Not Found' });
       }
     })
   );
-
+  
   // Fetch all orders (Admin only)
   orderRouter.get('/', isAdmin, expressAsyncHandler(async (req, res) => {
     try {
@@ -104,6 +128,7 @@ orderRouter.get(
       order.isDelivered = true;
       order.deliveredAt = Date.now(); 
       const updatedOrder = await order.save();
+      
   
       res.status(200).json({ message: "Order updated successfully", order: updatedOrder });
     } catch (error) {
@@ -128,6 +153,7 @@ orderRouter.get(
       res.status(500).json({ message: "Internal server error" });
     }
   }));
+ 
   
   
 

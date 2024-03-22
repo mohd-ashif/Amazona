@@ -19,7 +19,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// Enable CORS globally
+// Enable CORS globally 
 app.use(cors());
 
 app.get('/', (req, res) => {
