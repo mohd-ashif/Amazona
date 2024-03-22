@@ -153,7 +153,7 @@ function ProductScreen() {
   <div className="flex justify-between">
     <div className="flex justify-center"> 
       <span className="mr-2"> Special Price:</span> 
-      <span className='text-xl'>${product.offerPrice}</span> <span className="line-through ml-5 text-slate-500">${product.price}  </span> <span className='ml-5 text-orange-500'> {offerPercentage.toFixed(0)}% off</span> 
+      <span className='text-xl '>${product.offerPrice}</span> <span className="line-through ml-5 pt-1 text-slate-500">${product.price}  </span> <span className='ml-5 pt-1 text-orange-500'> {offerPercentage.toFixed(0)}% off</span> 
     </div>
     <div className="flex items-center "> 
      
@@ -164,10 +164,10 @@ function ProductScreen() {
 
           <hr />
           <div className="mb-4">
-            <div className="mb-4"> Brand :{product.brand}</div>
+            <div className="mb-4"> Brand :   {product.brand}</div>
             <hr />
 
-            <div className="mb-4"> Category :{product.category}</div>
+            <div className="mb-4"> Category :  {product.category}</div>
           </div>
           <hr />
           <div className="mb-4">Description: <p>{product.description}</p></div>
@@ -181,9 +181,9 @@ function ProductScreen() {
             <hr />
             <div className="flex justify-between">
               <div>Offer :</div>
-              <div>{offer} % </div>
+              <div>{offer}% </div>
             </div>
-
+            
           </div>
           <hr />
           <div className="mb-4">

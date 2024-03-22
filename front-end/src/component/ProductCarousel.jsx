@@ -20,7 +20,7 @@ const ProductCarousel = ({ products }) => {
                             <p className='mx-1 text-light text-center d-none d-lg-block'>{product.description}</p>
                         </div>
                         <Carousel.Caption style={{ width: '100%', background: 'rgba(0, 0, 0, 0.5)' }} className='position-absolute start-0 bottom-0 end-0 '>
-                            <h2>{product.name} (${product.price})</h2>
+                            <h2>{product.name} (${product.offerPrice})</h2>
                             <p className='mx-1 text-light text-center d-lg-none mt-5 ml-3'>{product.description}</p>
                         </Carousel.Caption>
                     </Link>

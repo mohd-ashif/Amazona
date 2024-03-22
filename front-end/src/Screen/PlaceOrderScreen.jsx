@@ -66,7 +66,7 @@ export default function PlaceOrderScreen() {
           },
         }
       );
-
+      
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE_SUCCESS' });
       localStorage.removeItem('cartItems');
@@ -76,7 +76,7 @@ export default function PlaceOrderScreen() {
       toast.error(getError(err));
     }
   };
-
+  
   useEffect(() => {
     if (!cart.paymentMethod) {
       navigate('/payment');
@@ -114,7 +114,6 @@ export default function PlaceOrderScreen() {
               <Link to="/payment">Edit</Link>
             </Card.Body>
           </Card>
-
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>Items</Card.Title>
