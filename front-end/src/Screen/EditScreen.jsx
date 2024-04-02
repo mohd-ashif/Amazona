@@ -50,7 +50,6 @@ export default function EditScreen() {
   const [countInStock, setCountInStock] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
-  const [timer, setTimer] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
 
   useEffect(() => {
@@ -99,7 +98,6 @@ export default function EditScreen() {
       formData.append('countInStock', countInStock);
       formData.append('description', description);
       formData.append('image', image);
-      formData.append('timer', timer);
       formData.append('offerPrice', offerPrice);
       
       await axios.put(

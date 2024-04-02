@@ -50,7 +50,7 @@ export default function SigninScreen() {
         <title>Sign In</title>
       </Helmet>
       <h1 className="my-3">Sign In</h1>
-      <Form onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler}> 
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control type="email" required  onChange={(e)=> setEmail(e.target.value)} />

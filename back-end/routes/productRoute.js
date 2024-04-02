@@ -10,23 +10,23 @@ const productRouter = express.Router();
 
 productRouter.use('/uploads', express.static('uploads'));
 
-// Image upload
+// Image upload 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './uploads');
-  },
+  }, 
   filename: (req, file, cb) => { 
     cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname));
   },
 });
-      
+
 const upload = multer({
   storage: storage,
   limits: {
     fileSize: 1024 * 1024 * 6, // 6 MB limit
   },
 });
-    
+
 //get all Products
 productRouter.get('/', async (req, res) => {
   const products = await Product.find();
@@ -104,7 +104,7 @@ productRouter.get(
     const countProducts = await Product.countDocuments({
       ...queryFilter,
       ...categoryFilter,
-      ...priceFilter,
+      ...priceFilter, 
       ...ratingFilter,
     });
     res.send({
@@ -214,9 +214,7 @@ productRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, re
 }));
 
 // POST create a new product  (only admin)
-productRouter.post(
-  '/create',
-  upload.single('image'),
+productRouter.post('/create',upload.single('image'),
   
   expressAsyncHandler(async (req, res) => {
     try {
@@ -254,31 +252,40 @@ productRouter.put(
   '/:id',
   isAuth,
   isAdmin,
-  upload.single('image'),
+  upload.single('image'), 
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
-    const imagePath = req.file ? req.file.filename : null; 
 
-    const product = await Product.findById(productId);
-    if (product) {
-      product.name = req.body.name;
-      product.slug = req.body.slug;
-      product.price = req.body.price;
-      product.image = imagePath;
-      product.category = req.body.category;
-      product.brand = req.body.brand;
-      product.countInStock = req.body.countInStock;
-      product.offerPrice = req.body.offerPrice;
-      product.description = req.body.description;
+    try {
+      const product = await Product.findById(productId);
+
+      if (!product) {
+        return res.status(404).send({ message: 'Product Not Found' });
+      }
+
+      product.name = req.body.name || product.name;
+      product.slug = req.body.slug || product.slug;
+      product.price = req.body.price || product.price;
+      product.category = req.body.category || product.category;
+      product.brand = req.body.brand || product.brand;
+      product.countInStock = req.body.countInStock || product.countInStock;
+      product.offerPrice = req.body.offerPrice || product.offerPrice;
+      product.description = req.body.description || product.description;
       
-      
+      if (req.file) {
+        const imagePath = req.file.filename;
+        product.image = imagePath;
+      }
+
       await product.save();
-      res.send({ message: 'Product Updated' });
-    } else {
-      res.status(404).send({ message: 'Product Not Found' });
+      return res.send({ message: 'Product Updated', product });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send({ message: 'Internal Server Error' });
     }
   })
 );
+
 
 // GET a product by ID
 productRouter.get('/:id', async (req, res) => {
