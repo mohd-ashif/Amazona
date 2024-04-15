@@ -63,7 +63,6 @@ export default function EditScreen() {
         setSlug(data.slug);
         setPrice(data.price);
         setImage(data.image);
-        setTimer(data.timer);
         setOfferPrice(data.offerPrice);
         setCategory(data.category);
         setBrand(data.brand);
