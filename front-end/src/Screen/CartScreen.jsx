@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 export default function CartScreen() {
     const navigate = useNavigate()
     const { state, dispatch: ctxDispatch } = useContext(Store);
-    const {cart: { cartItems },} = state;
+    const {cart: { cartItems },} = state; 
 
     const updateCartHandler = async (item, quantity) => {
       const { data } = await axios.get(`http://localhost:5000/products/${item._id}`);

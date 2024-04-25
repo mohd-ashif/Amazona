@@ -94,7 +94,7 @@ function ProductScreen() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-
+      
       dispatch({
         type: 'CREATE_SUCCESS',
       });
@@ -183,7 +183,7 @@ function ProductScreen() {
               <div>Offer :</div>
               <div>{offer}% </div>
             </div>
-            
+               
           </div>
           <hr />
           <div className="mb-4">

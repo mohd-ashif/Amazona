@@ -52,7 +52,7 @@ export default function PlaceOrderScreen() {
       const { data } = await Axios.post(
         'http://localhost:5000/orders',
         {
-          orderItems: cart.cartItems,
+          orderItems: cart.cartItems, 
           shippingAddress: cart.shippingAddress,
           paymentMethod: cart.paymentMethod,
           itemsPrice: cart.itemsPrice,
@@ -109,7 +109,7 @@ export default function PlaceOrderScreen() {
             <Card.Body>
               <Card.Title>Payment</Card.Title>
               <Card.Text>
-                <strong>Method:</strong> {cart.paymentMethod}
+                <strong>Method:</strong> {cart.paymentMethod} 
               </Card.Text>
               <Link to="/payment">Edit</Link>
             </Card.Body>
