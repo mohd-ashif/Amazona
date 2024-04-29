@@ -6,8 +6,9 @@ import { Store } from '../Store';
 import axios from 'axios';
 import { getError } from '../utils';
 import { Pie } from 'react-chartjs-2'; 
-import Chart from 'chart.js/auto';
 import { Bar } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
+
 
 
 const reducer = (state, action) => {
@@ -23,7 +24,7 @@ const reducer = (state, action) => {
   }
 };
 
-const Dashborad = ({  }) => {
+const Dashboard = () => { 
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [totalReceived, setTotalReceived] = useState(0);
@@ -62,8 +63,6 @@ const Dashborad = ({  }) => {
     setTotalPending(pendingCount);
   }, [orders]);
 
-
-
   const totalReceivedAmount = orders.filter(order => order.isPaid)
                                     .reduce((total, order) => total + order.totalPrice, 0);
 
@@ -72,9 +71,8 @@ const Dashborad = ({  }) => {
 
   const totalOrdersAmount = orders.reduce((total, order) => total + order.totalPrice, 0);
 
-
-     const chartD = {
-      labels: ['Total Received', 'Total Pending', 'Total Orders'],
+  const chartD = {
+    labels: ['Total Received', 'Total Pending', 'Total Orders'],
     datasets: [
       {
         data: [totalReceived, totalPending, orders.length],
@@ -95,32 +93,29 @@ const Dashborad = ({  }) => {
     ],
   };
 
- 
-
   return (
     <div className="container mx-auto">
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-   
-
       {loading ? (
         <LoadingBox />
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <div>
-         
           <div className="overflow-x-auto">
-            
-          
             <div className="mt-8">
-           <h2 className='text-center'> Orders:</h2> 
-              <Bar key="bar-chart" data={chartD} />
+              <h2 className="text-center">Orders:</h2> 
+              <div className="w-96 mx-auto">
+                <Bar data={chartD} />
+              </div>
               <hr />
 
-              <h2 className='text-center'> Amount :</h2> 
-              <Pie key="pie-chart" data={chartData} /> 
+              <h2 className="text-center">Amount :</h2> 
+              <div className="w-96 mx-auto">
+                <Pie data={chartData} /> 
+              </div> 
               <hr /> 
             </div>
           </div>
@@ -130,4 +125,4 @@ const Dashborad = ({  }) => {
   );
 };
 
-export default Dashborad;
+export default Dashboard;
