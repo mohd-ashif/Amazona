@@ -18,7 +18,9 @@ Gentify is a comprehensive MERN (MongoDB, Express.js, React, Node.js) stack e-co
 Gentify is a full-stack e-commerce application developed using the MERN stack. It enables users to browse, search, and purchase clothes with ease. The app incorporates various features to enhance user engagement, streamline the shopping process, and provide administrative capabilities for managing products, orders, and users.
 
 
-![Uploading Screenshot 2024-04-30 100921.png…]()
+![Screenshot 2024-04-30 100921](https://github.com/mohd-ashif/E-commerce/assets/134498212/86f39a0e-d2a5-4487-aac7-1f37e39b3b28)
+
+![Screenshot 2024-04-30 100930](https://github.com/mohd-ashif/E-commerce/assets/134498212/3f07a65e-84c3-45ab-bb3b-1efcb22b84ed)
 
 ## Features
 
