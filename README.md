@@ -1,4 +1,4 @@
-# Gentify MERN E-commerce App ⭐️
+![Screenshot 2024-04-30 100845](https://github.com/mohd-ashif/E-commerce/assets/134498212/e6968749-20af-44ea-a013-7c3ff6c39a82)# Gentify MERN E-commerce App ⭐️
 
 Gentify is a comprehensive MERN (MongoDB, Express.js, React, Node.js) stack e-commerce application tailored for purchasing clothes. It offers a range of features aimed at enhancing the user experience and facilitating smooth transactions. This README provides an overview of the app's functionality, architecture, and usage instructions.
 
@@ -16,13 +16,23 @@ Gentify is a comprehensive MERN (MongoDB, Express.js, React, Node.js) stack e-co
 ## Introduction
 
 Gentify is a full-stack e-commerce application developed using the MERN stack. It enables users to browse, search, and purchase clothes with ease. The app incorporates various features to enhance user engagement, streamline the shopping process, and provide administrative capabilities for managing products, orders, and users.
+## Demo Images
+
 
 
 ![Screenshot 2024-04-30 100921](https://github.com/mohd-ashif/E-commerce/assets/134498212/86f39a0e-d2a5-4487-aac7-1f37e39b3b28)
 
 ![Screenshot 2024-04-30 100930](https://github.com/mohd-ashif/E-commerce/assets/134498212/3f07a65e-84c3-45ab-bb3b-1efcb22b84ed)
+![Screenshot 2024-04-30 100845](https://github.com/mohd-ashif/E-commerce/assets/134498212/62bd9762-26a9-4604-bdda-140725b7a51b)
+
+![Screenshot 2024-04-30 100942](https://github.com/mohd-ashif/E-commerce/assets/134498212/ba6dac9f-4290-4f97-8393-e92446438736)
+
+![Screenshot 2024-04-30 100956](https://github.com/mohd-ashif/E-commerce/assets/134498212/231862c1-e44f-44aa-a8d7-8362d451bbec)
+![Screenshot 2024-04-30 101442](https://github.com/mohd-ashif/E-commerce/assets/134498212/b28ff380-4c94-4c32-a763-c4982bd21c9c)
 
 ## Features
+
+
 
 ### User-Facing Features:
 
